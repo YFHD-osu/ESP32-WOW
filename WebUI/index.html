@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>YFHD 網路喚醒</title>
+  </head>
+
+  <link rel="stylesheet" type="text/css" href="index.css"/> <!--   Load Style -->
+
+  <body background="body" class="center">
+    <div class="container">
+
+      <div class="titleGrid"> 
+        <img class="titleIcon" src="Icons\device.png">
+        <h1 class="titleText" style="text-align: center; line-height: 0px; color: white;">可用的裝置</h1>
+      </div>
+      
+      <button class="deviceContainer">
+        <div class="deviceGrid"> 
+          <img class="deviceLogo" src="Icons\Windows11Logo.png">
+          <p class="deviceName"> YFHD-PC </p>
+          <p class="deviceIP"> 內網IP: 192.168.1.110 </p>
+          <img class="deviceStatusImage" src="Icons\offlineDot.png">
+          <p class="deviceStatusText"> 離線 </p>
+        </div>
+      </button>
+
+      <button class="deviceContainer">
+        <div class="deviceGrid"> 
+          <img class="deviceLogo" src="Icons\WindowsServerLogo.png">
+          <p class="deviceName"> YFHD-SERVER </p>
+          <p class="deviceIP"> 內網IP: 192.168.1.109 </p>
+          <img class="deviceStatusImage" src="Icons\offlineDot.png">
+          <p class="deviceStatusText"> 離線 </p>
+        </div>
+      </button>
+
+      <button class="deviceContainer">
+        <div class="deviceGrid"> 
+          <img class="deviceLogo" src="Icons\MacOsLogo.png">
+          <p class="deviceName"> Maggie-Hackintosh </p>
+          <p class="deviceIP"> 內網IP: 192.168.1.108 </p>
+          <img class="deviceStatusImage" src="Icons\offlineDot.png">
+          <p class="deviceStatusText"> 離線 </p>
+        </div>
+      </button>
+
+      <div class="functionContainer">
+        <div class="functionGrid"> 
+          <button onclick="refresh()" class="refreshButton">更新狀態</button>
+          <button onclick="logout()" class="logoutButton">登出</button>
+        </div>
+      </div>
+
+      <!---
+      <ul style="list-style-type: none; margin: 0px; padding: 0px;">
+        <div class="center">
+          <table cellspacing="10" cellpadding = "0">
+            <colgroup style="background-color: grey;"></colgroup>
+            <tr>
+              <td class="tb"> YFHD-PC </td>
+              <td> <li class="wakeButton" onclick="sendWakeUp(1)">喚醒</li> </td>
+            </tr>
+            <tr>
+              <td class="tb"> YFHD-SERVER </td>
+              <td> <li class="wakeButton" onclick="sendWakeUp(2)">喚醒</li> </td>
+            </tr>
+            <tr>
+              <td class="tb"> Maggie-Hackintosh </td>
+              <td> <li class="wakeButton" onclick="sendWakeUp(3)">喚醒</li> </td>
+            </tr>
+          </table>
+        </div> 
+      </ul> --->
+
+    </div>
+  </body>
+
+  <script>
+    function sendWakeUp(deviceID) {
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", "/wake?device=1", true); 
+      xhr.send();
+    }
+    
+    function logout() {
+      window.open("/logout","_self");
+    }
+
+    function refresh() {
+      window.open("/logout","_self");
+    }
+  </script>
+
+</html>
