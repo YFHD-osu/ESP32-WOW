@@ -5,11 +5,12 @@
   </head>
 
   <link rel="stylesheet" type="text/css" href="https://yfhd-osu.github.io/ESP32-WOW/WebUI/index.css"/> <!--   Load Style -->
+  <script src="index.js"></script>
 
   <body background="body" class="center">
     <div class="container">
 
-      <div class="titleGrid"> 
+      <div class="titleGrid" onclick="sendWakeUp(0)"> 
         <img class="titleIcon" src="https://yfhd-osu.github.io/ESP32-WOW/WebUI/Icons\device.png">
         <h1 class="titleText" style="text-align: center; line-height: 0px; color: white;">可用的裝置</h1>
       </div>
@@ -24,7 +25,7 @@
         </div>
       </button>
 
-      <button class="deviceContainer">
+      <button class="deviceContainer" onclick="sendWakeUp(1)">
         <div class="deviceGrid"> 
           <img class="deviceLogo" src="https://yfhd-osu.github.io/ESP32-WOW/WebUI/Icons\WindowsServerLogo.png">
           <p class="deviceName"> YFHD-SERVER </p>
@@ -34,7 +35,7 @@
         </div>
       </button>
 
-      <button class="deviceContainer">
+      <button class="deviceContainer" onclick="sendWakeUp(2)">
         <div class="deviceGrid"> 
           <img class="deviceLogo" src="https://yfhd-osu.github.io/ESP32-WOW/WebUI/Icons\MacOsLogo.png">
           <p class="deviceName"> Maggie-Hackintosh </p>
@@ -50,45 +51,7 @@
           <button onclick="logout()" class="logoutButton">登出</button>
         </div>
       </div>
-
-      <!---
-      <ul style="list-style-type: none; margin: 0px; padding: 0px;">
-        <div class="center">
-          <table cellspacing="10" cellpadding = "0">
-            <colgroup style="background-color: grey;"></colgroup>
-            <tr>
-              <td class="tb"> YFHD-PC </td>
-              <td> <li class="wakeButton" onclick="sendWakeUp(1)">喚醒</li> </td>
-            </tr>
-            <tr>
-              <td class="tb"> YFHD-SERVER </td>
-              <td> <li class="wakeButton" onclick="sendWakeUp(2)">喚醒</li> </td>
-            </tr>
-            <tr>
-              <td class="tb"> Maggie-Hackintosh </td>
-              <td> <li class="wakeButton" onclick="sendWakeUp(3)">喚醒</li> </td>
-            </tr>
-          </table>
-        </div> 
-      </ul> --->
-
     </div>
   </body>
-
-  <script>
-    function sendWakeUp(deviceID) {
-      var xhr = new XMLHttpRequest();
-      xhr.open("GET", "/wake?device=1", true); 
-      xhr.send();
-    }
-    
-    function logout() {
-      window.open("/logout","_self");
-    }
-
-    function refresh() {
-      window.open("/logout","_self");
-    }
-  </script>
 
 </html>
