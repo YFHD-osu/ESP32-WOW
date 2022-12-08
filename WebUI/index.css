@@ -10,7 +10,7 @@
     /*
     height: 100vh;*/
   }
-  
+
   .center{
     display: flex;
     justify-content: center; 
@@ -31,7 +31,6 @@
     height: 75vh;
     display: block;
     align-items: center;
-    
   }
 
   /* 標題單元 */
@@ -127,56 +126,56 @@
 
   /* 按鈕單元 */
   .functionContainer{
-    margin-top: 40%;
-    margin-bottom: 0px;
-    height: 40px;
+    position: absolute;
+    bottom: 110px;
+    height: auto;
     width: 500px;
-    display: inline-block;
-  }
-
-  .functionGrid{
-    grid-template-columns: 1fr;
-    grid-template-rows: 0.5fr 0.5fr;
-    display: grid;
   }
 
   .logoutButton {
+    position: relative;
     width: 230px;
+    height: 45px;
     background-color: red;
     color: white;
     border: 0px;
-    padding: 5px 15px;
-    margin: 0px 10px 0px 10px;
+    margin: 0px 9px 0px 9px;
     text-align: center;
     font-size: 20px;
     cursor: pointer;
     border-radius: 50px;
-    grid-column: 2;
-    grid-row: 1;
   }
 
   .refreshButton{
     width: 230px;
+    height: 45px;
     background-color: rgb(4, 97, 196);
     color: white;
     border: 0px;
-    padding: 5px 15px;
-    margin: 0px 10px 0px 10px;
+    margin: 0px 9px 0px 9px ;
     text-align: center;
     font-size: 20px;
     cursor: pointer;
     border-radius: 50px;
-    grid-column: 1;
-    grid-row: 1;
   }
 
   @media (max-width: 990px) { 
+    * { padding: 0; margin: 0; }
+    body, #fullheight {
+      min-height: 1000px !important;
+      min-width: 250px !important;
+      height: 100vh; /*給 Safari 以外的瀏覽器讀取*/
+      height: calc(var(--vh, 1vh) * 100);
+      overflow: scroll;
+      overflow-x: hidden;
+    }
+
     .container{
       margin: 30px !important;
       width: 90%;
-      min-height: 400px;
+      min-height: 900px !important;
       height: calc(100vh - 100px);
-      
+      position: relative;
     }
 
     .titleGrid{
@@ -216,6 +215,8 @@
     }
 
     .deviceGrid{
+      height: auto;
+      width: auto;
       grid-template-columns: 25% 1fr;
       grid-template-rows: 0.33fr 0.33fr 0.33fr;
       display: grid;
@@ -271,47 +272,26 @@
 
     /* 按鈕單元 */
     .functionContainer{
-      margin-top: calc(100vh - 960px);
-      margin-bottom: 10px;
-      height: 10vw;
-      width: 90vw;
-      display: inline-block;
-    }
-
-    .functionGrid{
-      grid-template-columns: 1fr;
-      grid-template-rows: 0.5fr 0.5fr;
-      display: grid;
+      width: 95%;
+      height: auto;
+      margin-top: auto;
+      position: absolute;
+      bottom: 15px;
+      display: flex;
     }
 
     .logoutButton {
       width: 40vw;
       height: 10vw;
-      background-color: red;
-      color: white;
-      border: 0px;
-      padding: 5px 15px;
-      margin: 0px 10px 0px 10px;
-      text-align: center;
       font-size: 5vw;
-      cursor: pointer;
-      border-radius: 50px;
-      grid-column: 2;
-      grid-row: 1;
+      line-height: 2vw;
+      margin: 0px auto 0px auto;
     }
 
     .refreshButton{
       width: 40vw;
-      background-color: rgb(4, 97, 196);
-      color: white;
-      border: 0px;
-      padding: 5px 15px;
-      margin: 0px 10px 0px 10px;
-      text-align: center;
+      height: 10vw;
       font-size: 5vw;
-      cursor: pointer;
-      border-radius: 50px;
-      grid-column: 1;
-      grid-row: 1;
+      line-height: 1vw;
     }
   }
