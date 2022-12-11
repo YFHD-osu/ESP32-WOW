@@ -31,4 +31,4 @@ function refresh() {
 window.onload = function() {
   refresh();
 };
-setInterval(refresh(),8000);
+setInterval(function() {refresh()},8000);
