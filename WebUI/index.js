@@ -31,3 +31,5 @@ function refresh() {
 window.onload = function() {
   refresh();
 };
+
+setInterval(function(){refresh()},6000);
