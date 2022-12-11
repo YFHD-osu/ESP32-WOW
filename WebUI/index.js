@@ -12,6 +12,7 @@ function refresh() {
   var xhr = new XMLHttpRequest();
   xhr.open("GET", "/refresh?r=0", true); 
   xhr.timeout = 10000;
+  xhr.withCredentials = true;
   xhr.send();
 
   xhr.onreadystatechange=()=>{
