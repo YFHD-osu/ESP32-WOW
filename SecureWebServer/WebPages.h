@@ -3,6 +3,7 @@ const char index_html[] PROGMEM = R"rawliteral(
 <html>
   <head>
     <title>YFHD 網路喚醒</title>
+    <link rel="shortcut icon" type="image/png" href="https://yfhd-osu.github.io/ESP32-WOW/WebUI/favicon.png"/>
   </head>
 
   <link rel="stylesheet" type="text/css" href="https://yfhd-osu.github.io/ESP32-WOW/WebUI/index.css"/> <!--   Load Style -->
