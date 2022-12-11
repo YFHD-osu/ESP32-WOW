@@ -1,6 +1,6 @@
 function sendWakeUp(deviceID) {
   var xhr = new XMLHttpRequest();
-  xhr.open("GET", `/wake?device=${deviceID}`, true); 
+  xhr.open("POST", `/wake?device=${deviceID}`, true); 
   xhr.send();
 }
 
