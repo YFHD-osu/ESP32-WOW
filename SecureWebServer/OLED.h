@@ -1,11 +1,7 @@
-#include <U8g2lib.h>
+#if OLED_DISPLAY
 
-#ifdef U8X8_HAVE_HW_SPI
-#include <SPI.h>
-#endif
-#ifdef U8X8_HAVE_HW_I2C
+#include <U8g2lib.h>
 #include <Wire.h>
-#endif
 
 U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE);
 
@@ -103,3 +99,24 @@ void SSD1306::beginInfo(int wifi, int ddns, int webServer){ // 更新開機時�
   
   u8g2.sendBuffer();
 }
+
+#else
+
+class SSD1306 {
+  public:
+    void begin();
+    void println(String);
+    void sendBuffer();
+    void clearBuffer();
+    void beginInfo(int, int, int);
+};
+
+void SSD1306::begin () {}
+void SSD1306::println (String context) {}
+void SSD1306::sendBuffer () {}
+void SSD1306::clearBuffer () {}
+void SSD1306::beginInfo (int wifi, int ddns, int webServer) {}
+
+#endif
+
+SSD1306 OLEDController;

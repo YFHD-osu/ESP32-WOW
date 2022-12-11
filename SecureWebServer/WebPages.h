@@ -21,8 +21,8 @@ const char index_html[] PROGMEM = R"rawliteral(
           <img class="deviceLogo" src="https://yfhd-osu.github.io/ESP32-WOW/WebUI/Icons\Windows11Logo.png">
           <p class="deviceName"> YFHD-PC </p>
           <p class="deviceIP"> 內網IP: 192.168.1.110 </p>
-          <img class="deviceStatusImage" src="https://yfhd-osu.github.io/ESP32-WOW/WebUI/Icons\offlineDot.png">
-          <p class="deviceStatusText"> 離線 </p>
+          <img class="deviceStatusImage" id="deviceImg0" src="https://yfhd-osu.github.io/ESP32-WOW/WebUI/Icons\pendingDot.png">
+          <p class="deviceStatusText" id="deviceStatus0"> 連線中... </p>
         </div>
       </button>
 
@@ -31,8 +31,8 @@ const char index_html[] PROGMEM = R"rawliteral(
           <img class="deviceLogo" src="https://yfhd-osu.github.io/ESP32-WOW/WebUI/Icons\WindowsServerLogo.png">
           <p class="deviceName"> YFHD-SERVER </p>
           <p class="deviceIP"> 內網IP: 192.168.1.109 </p>
-          <img class="deviceStatusImage" src="https://yfhd-osu.github.io/ESP32-WOW/WebUI/Icons\offlineDot.png">
-          <p class="deviceStatusText"> 離線 </p>
+          <img class="deviceStatusImage" id="deviceImg1" src="https://yfhd-osu.github.io/ESP32-WOW/WebUI/Icons\pendingDot.png">
+          <p class="deviceStatusText" id="deviceStatus1"> 連線中... </p>
         </div>
       </button>
 
@@ -41,22 +41,19 @@ const char index_html[] PROGMEM = R"rawliteral(
           <img class="deviceLogo" src="https://yfhd-osu.github.io/ESP32-WOW/WebUI/Icons\MacOsLogo.png">
           <p class="deviceName"> Maggie-Hackintosh </p>
           <p class="deviceIP"> 內網IP: 192.168.1.108 </p>
-          <img class="deviceStatusImage" src="https://yfhd-osu.github.io/ESP32-WOW/WebUI/Icons\offlineDot.png">
-          <p class="deviceStatusText"> 離線 </p>
+          <img class="deviceStatusImage" id="deviceImg2" src="https://yfhd-osu.github.io/ESP32-WOW/WebUI/Icons\pendingDot.png">
+          <p class="deviceStatusText" id="deviceStatus2"> 連線中... </p>
         </div>
       </button>
 
-      <div class="functionContainer">
-        <div class="functionGrid"> 
-          <button onclick="refresh()" class="refreshButton">更新狀態</button>
-          <button onclick="logout()" class="logoutButton">登出</button>
-        </div>
+      <div class="functionContainer"> 
+        <button onclick="refresh()" class="refreshButton">更新狀態</button>
+        <button onclick="logout()" class="logoutButton">登出</button>
       </div>
     </div>
   </body>
 
 </html>
-
 )rawliteral";
 
 const char login_html[] PROGMEM = R"rawliteral(
@@ -89,17 +86,5 @@ const char login_html[] PROGMEM = R"rawliteral(
       </div>
   </body>
 
-</html>
-)rawliteral";
-
-const char logout_html[] PROGMEM = R"rawliteral(
-<!DOCTYPE HTML><html>
-<head>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-</head>
-<body>
-  <p>Logged out or <a href="/">return to homepage</a>.</p>
-  <p><strong>Note:</strong> close all web browser tabs to complete the logout process.</p>
-</body>
 </html>
 )rawliteral";

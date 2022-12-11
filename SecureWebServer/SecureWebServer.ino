@@ -1,24 +1,9 @@
-#define WIFI_SSID "WiFi Name"
-#define WIFI_PSK  "WiFi Pass"
-
-#define USERNAME "Web username"
-#define PASSWORD "Web password"
-
-//DDNS Update
-#include <EasyDDNS.h>
-
-// Encryption
-#include "mbedtls.h"
-
-// Datas
-#include "WebPages.h"
-
-// Certificates
-#include "certificates/cert.h"
-#include "certificates/private_key.h"
-
-// OLED
-#include "OLED.h"
+#include "config.h"   // 導入設定
+#include "EasyDDNS.h" // DDNS更新
+#include "Ping.h"     // Ping功能
+#include "mbedtls.h"  // 登入加密
+#include "WebPages.h" // 網頁原碼
+#include "OLED.h"     // OLED狀態
 
 // ESP32-HTTPS-Server
 #include <WiFi.h>
@@ -29,9 +14,10 @@
 #include <HTTPResponse.hpp>
 #include <WiFiUdp.h>
 #include <WakeOnLan.h>
+
 using namespace httpsserver;
 
-// Generate encryption key
+// Random AES key
 char* generateUID();
 char* key = generateUID();
 
@@ -41,12 +27,8 @@ SSLCert cert = SSLCert(
 );
 
 HTTPSServer secureServer = HTTPSServer(&cert, 444);
-WiFiServer server(80);
 WiFiUDP UDP;
 WakeOnLan WOL(UDP); 
-SSD1306 OLEDController;
-
-const char *MACAddress[] = {"2C:F0:5D:97:25:F7", "1C:1B:0D:9E:FE:5F", "78:24:AF:86:0C:3A"};
 
 void handleLogin(HTTPRequest * req, HTTPResponse * res);
 void handleLogout(HTTPRequest * req, HTTPResponse * res);
@@ -55,38 +37,41 @@ void handleRoot(HTTPRequest * req, HTTPResponse * res);
 void handle404(HTTPRequest * req, HTTPResponse * res);
 
 void setup() {
-  Serial.begin(115200);  // For serial logging
+  Serial.begin(115200);  // For Serial logging
   OLEDController.begin();// For OLED logging
 
   // 不斷嘗試連線到WiFi直到成功
   OLEDController.beginInfo(2,3,3);
   while(!(connectWifi(20))) Serial.println("[WiFi] Trying to reconnect."); 
 
+  // 初始化Ping
+  Pinger.init();
+
   // DDNS 更新
-  OLEDController.beginInfo(1,2,3);
-  server.begin();
-  EasyDDNS.service("noip");
-  EasyDDNS.client("mchill.ddns.net", "yfhd8964", "eason941106");
-  EasyDDNS.onUpdate([&](const char* oldIP, const char* newIP) {
-    Serial.print("[DDNS Update] IP Change Detected: ");
-    Serial.println(newIP);
-  });
-  EasyDDNS.update(0);
-  
+  #if DUC_SERVICE
+    DDNS.init();
+    DDNS.update(); // 更新網域名稱@EasyDDNS.h
+    OLEDController.beginInfo(1,2,3);
+  #else
+    OLEDController.beginInfo(1,0,3);
+  #endif
+
   // 註冊頁面到伺服器 ☒☑→⧖
   OLEDController.beginInfo(1,1,2);
-  ResourceNode *nodeLogin   = new ResourceNode("/login", "GET", &handleLogin);
-  ResourceNode *nodeSession = new ResourceNode("/login", "POST", &handleSession);
-  ResourceNode *nodeLogout  = new ResourceNode("/logout", "GET", &handleLogout);
-  ResourceNode *nodeRoot    = new ResourceNode("/", "GET", &handleRoot);
-  ResourceNode *wakeDevice  = new ResourceNode("/wake", "POST"/*"GET"*/, &handleWake);
-  ResourceNode *node404     = new ResourceNode("", "GET", &handle404);
+  ResourceNode *nodeLogin   = new ResourceNode("/login",  "GET",  &handleLogin);
+  ResourceNode *nodeSession = new ResourceNode("/login",  "POST", &handleSession);
+  ResourceNode *nodeLogout  = new ResourceNode("/logout", "GET",  &handleLogout);
+  ResourceNode *nodeRoot    = new ResourceNode("/",       "GET",  &handleRoot);
+  ResourceNode *wakeDevice  = new ResourceNode("/wake",   "POST", &handleWake);
+  ResourceNode *pingDevice  = new ResourceNode("/refresh","GET",  &handlePing);
+  ResourceNode *node404     = new ResourceNode("",        "GET",  &handle404);
 
   secureServer.registerNode(nodeLogin);
   secureServer.registerNode(nodeLogout);
   secureServer.registerNode(nodeSession);
   secureServer.registerNode(nodeRoot);
   secureServer.registerNode(wakeDevice);
+  secureServer.registerNode(pingDevice);
   secureServer.setDefaultNode(node404);
   
   // 啟動網站伺服器
@@ -140,16 +125,17 @@ void handleWake(HTTPRequest *req, HTTPResponse * res) {
 // 處理登入請求
 void handleSession(HTTPRequest *req, HTTPResponse * res) {  
   char requestBody[9+strlen(USERNAME)+9+strlen(PASSWORD)+5] = "";
-  char expectedHeader[9+strlen(USERNAME)+9+strlen(PASSWORD)+2];
+  char expectedHeader[9+strlen(USERNAME)+9+strlen(PASSWORD)+3];
   char *pch;
     
   // 擷取請求的資料
-  req->readChars(requestBody, 9+strlen(USERNAME)+9+strlen(PASSWORD)+1);
+  req->readChars(requestBody, 9+strlen(USERNAME)+9+strlen(PASSWORD)+2);
   // 計算預期的資料
   strcpy(expectedHeader, "username=");
   strcat(expectedHeader, USERNAME);
   strcat(expectedHeader, "&password=");
   strcat(expectedHeader, PASSWORD);
+  strcat(expectedHeader, "&");
 
   /* For debug purpose...*/
   Serial.println("[Debug] Client Post: ");
@@ -177,6 +163,22 @@ void handleSession(HTTPRequest *req, HTTPResponse * res) {
     res->setHeader("set-cookie", "ESPSESSION=0");
     res->setHeader("Location", "/login?e=1");
   }
+}
+
+//處理更新裝置
+void handlePing(HTTPRequest * req, HTTPResponse * res) {
+  if (is_authenticated(req)) {
+    Pinger.update();
+    res->setHeader("Content-Type", "text/plain; charset=utf-8");
+    for (int i=0 ; i<3 ; i++)
+      res->print(Pinger.deviceStatus[i]);
+    return;
+  }
+  Serial.println("[Debug] Unauthenticated Client!");
+  req->discardRequestBody();
+  res->setStatusCode(301);
+  res->setStatusText("Moved Permanently");
+  res->setHeader("Location", "/login");  
 }
 
 // 建立根(控制喚醒)頁面
