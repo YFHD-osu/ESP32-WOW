@@ -8,45 +8,48 @@
   
   <link rel="stylesheet" type="text/css" href="https://yfhd-osu.github.io/ESP32-WOW/WebUI/index.css"/> <!--   Load Style -->
   <script src="https://yfhd-osu.github.io/ESP32-WOW/WebUI/index.js"></script>
+  <link rel="icon" href="https://yfhd-osu.github.io/ESP32-WOW/WebUI\Icons\Icon.png" type="image/x-icon" />
 
-  <body background="body" class="center">
+  <body background="body" class="center" wi>
     <div class="container">
 
-      <div class="titleGrid" onclick="sendWakeUp(0)"> 
+      <div class="titleGrid"> 
         <img class="titleIcon" src="https://yfhd-osu.github.io/ESP32-WOW/WebUI/Icons\device.png">
         <h1 class="titleText" style="text-align: center; line-height: 0px; color: white;">可用的裝置</h1>
       </div>
-      
-      <button class="deviceContainer">
-        <div class="deviceGrid"> 
-          <img class="deviceLogo" src="https://yfhd-osu.github.io/ESP32-WOW/WebUI/Icons\Windows11Logo.png">
-          <p class="deviceName"> YFHD-PC </p>
-          <p class="deviceIP"> 內網IP: 192.168.1.110 </p>
-          <img class="deviceStatusImage" id="deviceImg0" src="https://yfhd-osu.github.io/ESP32-WOW/WebUI/Icons\pendingDot.png">
-          <p class="deviceStatusText" id="deviceStatus0"> 連線中... </p>
-        </div>
-      </button>
 
-      <button class="deviceContainer" onclick="sendWakeUp(1)">
-        <div class="deviceGrid"> 
-          <img class="deviceLogo" src="https://yfhd-osu.github.io/ESP32-WOW/WebUI/Icons\WindowsServerLogo.png">
-          <p class="deviceName"> YFHD-SERVER </p>
-          <p class="deviceIP"> 內網IP: 192.168.1.109 </p>
-          <img class="deviceStatusImage" id="deviceImg1" src="https://yfhd-osu.github.io/ESP32-WOW/WebUI/Icons\pendingDot.png">
-          <p class="deviceStatusText" id="deviceStatus1"> 連線中... </p>
-        </div>
-      </button>
+      <div class="deviceContainer">
+        <button class="deviceCard" onclick="sendWakeUp(0)">
+          <div class="deviceGrid"> 
+            <img class="deviceLogo" src="https://yfhd-osu.github.io/ESP32-WOW/WebUI/Icons\Windows11Logo.png">
+            <p class="deviceName"> YFHD-PC </p>
+            <p class="deviceIP"> 內網IP: 192.168.1.110 </p>
+            <img class="deviceStatusImage" id="deviceImg0" src="https://yfhd-osu.github.io/ESP32-WOW/WebUI/Icons\pendingDot.png">
+            <p class="deviceStatusText" id="deviceStatus0"> 連線中... </p>
+          </div>
+        </button>
 
-      <button class="deviceContainer" onclick="sendWakeUp(2)">
-        <div class="deviceGrid"> 
-          <img class="deviceLogo" src="https://yfhd-osu.github.io/ESP32-WOW/WebUI/Icons\MacOsLogo.png">
-          <p class="deviceName"> Maggie-Hackintosh </p>
-          <p class="deviceIP"> 內網IP: 192.168.1.108 </p>
-          <img class="deviceStatusImage" id="deviceImg2" src="https://yfhd-osu.github.io/ESP32-WOW/WebUI/Icons\pendingDot.png">
-          <p class="deviceStatusText" id="deviceStatus2"> 連線中... </p>
-        </div>
-      </button>
+        <button class="deviceCard" onclick="sendWakeUp(1)">
+          <div class="deviceGrid"> 
+            <img class="deviceLogo" src="https://yfhd-osu.github.io/ESP32-WOW/WebUI/Icons\WindowsServerLogo.png">
+            <p class="deviceName"> YFHD-SERVER </p>
+            <p class="deviceIP"> 內網IP: 192.168.1.109 </p>
+            <img class="deviceStatusImage" id="deviceImg1" src="https://yfhd-osu.github.io/ESP32-WOW/WebUI/Icons\pendingDot.png">
+            <p class="deviceStatusText" id="deviceStatus1"> 連線中... </p>
+          </div>
+        </button>
 
+        <button class="deviceCard" onclick="sendWakeUp(2)">
+          <div class="deviceGrid"> 
+            <img class="deviceLogo" src="https://yfhd-osu.github.io/ESP32-WOW/WebUI/Icons\MacOsLogo.png">
+            <p class="deviceName"> Maggie-Hackintosh </p>
+            <p class="deviceIP"> 內網IP: 192.168.1.108 </p>
+            <img class="deviceStatusImage" id="deviceImg2" src="https://yfhd-osu.github.io/ESP32-WOW/WebUI/Icons\pendingDot.png">
+            <p class="deviceStatusText" id="deviceStatus2"> 連線中... </p>
+          </div>
+        </button>
+
+      </div>
       <div class="functionContainer"> 
         <button onclick="refresh()" class="refreshButton">更新狀態</button>
         <button onclick="logout()" class="logoutButton">登出</button>
