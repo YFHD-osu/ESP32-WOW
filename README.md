@@ -8,5 +8,5 @@ By using ESP32 to setup and HTTPS web server and handle WOL
 request is power-saving.
 
 ## Demostration
-<a href="https://yfhd-osu.github.io/ESP32-WOW/WebUI/index.html" target="_blank">主畫面</a>
-<a href="https://yfhd-osu.github.io/ESP32-WOW/WebUI/login.html" target="_blank">登入頁</a>
+[主畫面](https://external.ink/?to=https://yfhd-osu.github.io/ESP32-WOW/WebUI/index.html)
+[登入頁](https://external.ink/?to=https://yfhd-osu.github.io/ESP32-WOW/WebUI/login.html)
