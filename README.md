@@ -36,3 +36,8 @@ request is a power-saving method.
 2. 主機連入時提取Client IP
 3. 以”使用者名稱：密碼：IP” 格式合併字串
 4. 及時使用AES 加密計算Session ID 並驗證
+
+## 參考文獻
+1. [輸入密碼錯誤時如何提示](https://stackoverflow.com/questions/6242976/javascript-hide-show-element)
+
+2. [Safari 的 vh 有點陰間](https://ithelp.ithome.com.tw/m/articles/10249090)
