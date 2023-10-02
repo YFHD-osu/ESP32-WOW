@@ -29,15 +29,3 @@ void PingHandler::update (){
 }
   
 PingHandler pingHandler;
-
-/* Change line 292, 293 in ping.cpp from:
-// Timeout
-  tout.tv_sec = timeout;
-  tout.tv_usec = 0;
-*/
-
-/* to this:
-// Timeout
-  tout.tv_sec = 0;
-  tout.tv_usec = timeout*1000;
-*/
