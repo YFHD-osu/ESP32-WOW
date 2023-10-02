@@ -6,13 +6,13 @@
 
 WiFiServer server(80); // 為EasyDDNS開啟WiFi伺服器
 
-class ddnsClass {
+class DDNSHandler {
   public:
     void init();
     void update();        
 };
 
-void ddnsClass::init(){
+void DDNSHandler::init(){
   server.begin();
 
   EasyDDNS.service(domainType);
@@ -25,10 +25,10 @@ void ddnsClass::init(){
   );
 }
 
-void ddnsClass::update(){
+void DDNSHandler::update(){
   EasyDDNS.update(0);
 }
 
-ddnsClass DDNS;
+DDNSHandler ddnsHandler;
 
 #endif

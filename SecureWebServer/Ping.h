@@ -1,6 +1,6 @@
 #include <ESP32Ping.h>
 
-class pingClass {
+class PingHandler {
   public:
     bool deviceStatus[DEVICE_COUNT];
     void init();
@@ -9,13 +9,13 @@ class pingClass {
     unsigned int lastPing;
 };
 
-void pingClass::init(){
+void PingHandler::init(){
   for(int i=0 ; i<DEVICE_COUNT ; i++)
     deviceStatus[i] = false;
   lastPing = millis();
 }
 
-void pingClass::update (){
+void PingHandler::update (){
   if (millis() - lastPing < 1000)
     return;
 
@@ -28,7 +28,7 @@ void pingClass::update (){
 
 }
   
-pingClass Pinger;
+PingHandler pingHandler;
 
 /* Change line 292, 293 in ping.cpp from:
 // Timeout

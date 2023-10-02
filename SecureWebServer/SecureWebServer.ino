@@ -45,12 +45,12 @@ void setup() {
   while(!(connectWifi(20))) Serial.println("[WiFi] Trying to reconnect."); 
 
   // 初始化Ping
-  Pinger.init();
+  pingHandler.init();
 
   // DDNS 更新
   #if DUC_SERVICE
-    DDNS.init();
-    DDNS.update(); // 更新網域名稱@EasyDDNS.h
+    ddnsHandler.init();
+    ddnsHandler.update(); // 更新網域名稱@EasyDDNS.h
     OLEDController.beginInfo(1,2,3);
   #else
     OLEDController.beginInfo(1,0,3);
@@ -168,10 +168,10 @@ void handleSession(HTTPRequest *req, HTTPResponse * res) {
 //處理更新裝置
 void handlePing(HTTPRequest * req, HTTPResponse * res) {
   if (is_authenticated(req)) {
-    Pinger.update();
+    pingHandler.update();
     res->setHeader("Content-Type", "text/plain; charset=utf-8");
     for (int i=0 ; i<3 ; i++)
-      res->print(Pinger.deviceStatus[i]);
+      res->print(pingHandler.deviceStatus[i]);
     return;
   }
   Serial.println("[Debug] Unauthenticated Client!");
