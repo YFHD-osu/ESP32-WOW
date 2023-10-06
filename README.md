@@ -16,12 +16,20 @@ request is a power-saving method.
 - [Mbed-TLS](https://github.com/Mbed-TLS/mbedtls) - AES encrypt library
 - [EasyDDNS](https://github.com/ayushsharma82/EasyDDNS) - DUC address update library
 - [ESP32Ping](https://github.com/marian-craciunescu/ESP32Ping/releases/tag/1.6) (modified) - Ping device library
+- [ESP32HttpsSever](https://github.com/fhessel/esp32_https_server) - Web server library
 
 #### Note: Need to change line 292 to 293 in ping.cpp:
 ```cpp
 // Timeout
   tout.tv_sec = 0; // tout.tv_sec = timeout;
   tout.tv_usec = timeout*1000; //tout.tv_usec = 0;
+```
+
+#### Note: Need to change line 8 in esp32_https_server\src\HTTPConnection.hpp
+```cpp
+#include <mbedtls/base64.h>
+#include <esp32/sha.h> //#include <hwcrypto/sha.h>
+#include <functional>
 ```
 
 ## Dynamic Security Authentication

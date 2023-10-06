@@ -1,0 +1,9 @@
+# VS code realted
+.vscode/
+
+# Chinese font generator related
+u8g2Files/
+Generator.ps1
+
+# Esp32 config
+config.h 
