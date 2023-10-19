@@ -1,5 +1,6 @@
 # VS code realted
 .vscode/
+build/
 
 # Chinese font generator related
 u8g2Files/

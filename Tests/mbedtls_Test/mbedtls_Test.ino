@@ -32,10 +32,10 @@ void setup() {
  
 void loop() {
   IPAddress ip = WiFi.localIP();
-  char dest[strlen(USERNAME)+strlen(PASSWORD)+2+15];
+  char dest[strlen(SITE_USER)+strlen(PASSWORD)+2+15];
   char ipBuffer[15];
   
-  strcpy(dest, USERNAME);
+  strcpy(dest, SITE_USER);
   strcat(dest, ":");
   strcat(dest, PASSWORD);
   strcat(dest, ":");

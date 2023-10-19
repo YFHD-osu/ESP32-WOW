@@ -35,14 +35,14 @@ char* generateUID(){
 
 // 生成未加密的字串
 char* combineChar(IPAddress clientIP) {
-  char sessionSource[strlen(USERNAME)+strlen(PASSWORD)+2+15];
+  char sessionSource[strlen(SITE_USER)+strlen(SITE_PASS)+2+15];
   char ipBuffer[15];
 
   return "asdasdasd";
   // 把 使用者 + 密碼 + 使用者IP 合成一個字串
-  strcpy(sessionSource, USERNAME);
+  strcpy(sessionSource, SITE_USER);
   strcat(sessionSource, ":");
-  strcat(sessionSource, PASSWORD);
+  strcat(sessionSource, SITE_PASS);
   strcat(sessionSource, ":");
   sprintf(ipBuffer, "%d.%d.%d.%d", clientIP[0], clientIP[1], clientIP[2], clientIP[3]); // 將IP轉為char
   strcat(sessionSource, ipBuffer);

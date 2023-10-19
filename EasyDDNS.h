@@ -1,34 +1,48 @@
-#if DUC_SERVICE //檢查 DDNS 更新是否在config.h裡開啟 
+#ifndef EASY_DDNS_INCLUDE
+#define EASY_DDNS_INCLUDE
 
-#include <EasyDDNS.h>
 #include <WiFi.h>
-#include "HTTPClient.h"
+#include "config.h"
+#include <EasyDDNS.h>
+// #include "HTTPClient.h"
 
-WiFiServer server(80); // 為EasyDDNS開啟WiFi伺服器
-
-class DDNSHandler {
+class DDNSHandler : public EasyDDNSClass {
   public:
-    void init();
-    void update();        
+    DDNSHandler() : EasyDDNSClass() {};
+
+    void begin(void);
+    void update(int interval=-1);
+
+  private:
+    // Starts a wifi server for EasyDDNS
+    WiFiServer server = WiFiServer(80);
+    unsigned long lastUpdate = millis();
 };
 
-void DDNSHandler::init(){
+#if DUC_SERVICE
+void DDNSHandler::begin(void) {
   server.begin();
-
-  EasyDDNS.service(domainType);
-  EasyDDNS.client(domainName, domainUser, domainPass);
-  EasyDDNS.onUpdate([&](const char* oldIP, const char* newIP) 
+  EasyDDNSClass::service(DOMAIN_TYPE);
+  EasyDDNSClass::client(DOMAIN_NAME, DOMAIN_USER, DOMAIN_PASS);
+  EasyDDNSClass::onUpdate([&](const char* oldIP, const char* newIP) 
     {
       Serial.print("[DDNS Update] IP Change Detected: ");
       Serial.println(newIP);
     }
   );
+  update();
 }
 
-void DDNSHandler::update(){
-  EasyDDNS.update(0);
+void DDNSHandler::update(int interval=-1) {
+  if (millis() - lastUpdate < interval && interval > 0) return;
+  OLED.draw_DDNS(gImage_DDNS_connecting);
+  EasyDDNSClass::update(0);
+  OLED.draw_DDNS(gImage_DDNS_connected);
 }
+#else
+void DDNSHandler::begin(void) {}
+void DDNSHandler::update(int interval) {}
+#endif
 
-DDNSHandler ddnsHandler;
-
+DDNSHandler ddns;
 #endif

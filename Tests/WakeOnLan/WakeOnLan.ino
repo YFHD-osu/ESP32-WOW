@@ -16,17 +16,17 @@ WiFiUDP UDP;
 WiFiServer server(80);
 WakeOnLan WOL(UDP); // Pass WiFiUDP class
 
-SSD1306 OLEDController;
+SSD1306 OLED;
 
 void setup() {
   Serial.begin(115200);
   for (int i = 0; i < 4; i++) pinMode(Buttons[i], INPUT);
   for (int i = 0; i < 4; i++) pinMode(LED[i], OUTPUT);
-  OLEDController.init();
+  OLED.init();
   while(!(connectWifi(20))) Serial.println(" -> Trying to reconnect."); //不斷嘗試連線到WiFi直到成功
   WOL.calculateBroadcastAddress(WiFi.localIP(), WiFi.subnetMask());
-  OLEDController.clearbuffer();
-  OLEDController.sendbuffer();
+  OLED.clearbuffer();
+  OLED.sendbuffer();
   timeCounter = -1; repeatLED();
 }
 
@@ -48,11 +48,11 @@ void loop() {
 bool connectWifi(int timeout){
   timeCounter = 0;
   
-  OLEDController.clearbuffer();
-  OLEDController.println("嘗試連線至:");
-  OLEDController.println(" WiFi: " + String(wifiName));
-  OLEDController.println("");
-  OLEDController.sendbuffer();
+  OLED.clearbuffer();
+  OLED.println("嘗試連線至:");
+  OLED.println(" WiFi: " + String(wifiName));
+  OLED.println("");
+  OLED.sendbuffer();
   
   Serial.printf("Connecting to WiFi: %s ", wifiName);
   WiFi.begin(wifiName, wifiPass); //连接到wifi
@@ -68,8 +68,8 @@ bool connectWifi(int timeout){
   
   if (timeCounter > timeout) {
     Serial.println(" -> Connect timeout.");
-    OLEDController.println("->連線超時");
-    OLEDController.sendbuffer();
+    OLED.println("->連線超時");
+    OLED.sendbuffer();
     delay(1000);
     return false;
   }
@@ -77,8 +77,8 @@ bool connectWifi(int timeout){
     Serial.println(" -> Connect success.");
     Serial.print(" | Local IP: "); Serial.println(WiFi.localIP());
     Serial.print(" | Subnet Mask: "); Serial.println(WiFi.subnetMask());
-    OLEDController.println("->連線成功");
-    OLEDController.sendbuffer();
+    OLED.println("->連線成功");
+    OLED.sendbuffer();
     delay(1000);
     return true;
   }
