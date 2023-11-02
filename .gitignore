@@ -8,3 +8,6 @@ Generator.ps1
 
 # Esp32 config
 config.h 
+
+# SSl certificate
+certificate/
