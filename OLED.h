@@ -30,6 +30,7 @@ class SSD1306: public u8g2  {
 };
 
 void SSD1306::begin() {
+  
   u8g2::begin();
   u8g2::enableUTF8Print();  // 啟動 UTF8 支援
   draw_WIFI(gImage_wifi_blank);

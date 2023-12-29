@@ -10,6 +10,7 @@
 #include "mbedtls.h"
 #include "WebPages.h"
 #include "WakeOnLan.h"
+#include "logger.h"
 
 using namespace httpsserver;
 
@@ -61,14 +62,14 @@ void WebServer::begin(void) {
   WebServer::registerNode(pingDevice);
   WebServer::setDefaultNode(node404);
   
-  Serial.printf("[WebServer] Currently AES key: %s\n", key);
-  Serial.println("[WebServer] Starting HTTP server...");
+  LOGI("WebServer", "Starting server with AES key: %s", key);
+
   WebServer::start();
   if (WebServer::isRunning()) {
-    Serial.println("[WebServer] Server is ready.");
+    LOGI("WebServer", "Server is ready");
     OLED.draw_SERVER(gImage_server_connected);
   } else {
-    Serial.println("[WebServer] Server starts failed, restarting EPS32.");
+    LOGE("WebServer", "Server starts failed, restarting EPS32");
     OLED.draw_SERVER(gImage_server_failure);
     delay(1000);
     ESP.restart();
@@ -102,7 +103,7 @@ void WebServer::handleWake(HTTPRequest *req, HTTPResponse * res) {
   if (deviceID == "0") WOL.sendMagicPacket(MACAddress[0]); //喚醒裝置
   else if (deviceID == "1") WOL.sendMagicPacket(MACAddress[1]);
   else if (deviceID == "2") WOL.sendMagicPacket(MACAddress[2]);
-  Serial.println(deviceID.c_str());
+  LOGD("WebServer", "Got wake requests (Device: %s)", deviceID.c_str());
   
   req->discardRequestBody();
 }
@@ -122,11 +123,9 @@ void WebServer::handleSession(HTTPRequest *req, HTTPResponse * res) {
   strcat(expectedHeader, "&");
 
   /* For debug purpose...*/
-  Serial.println("[Debug] Client Post: ");
-  Serial.printf("[Debug] Request  Body: %s\n", requestBody);
-  Serial.printf("[Debug] Expected Body: %s\n", expectedHeader);
+  LOGD("WebServer", "Client Post:\n Request  Body: %s\n Expected Body: %s\n", requestBody, expectedHeader);
   if (strstr(expectedHeader, requestBody) != NULL){ // 比對預期的資料是否在請求中
-    Serial.println("Pass!");
+    LOGD("WebServer", "Authenticate pass!");
     
     IPAddress clientIP = req->getClientIP(); // 取得使用者IP
     char* combineResult = combineChar(clientIP); // 合成字串
@@ -158,7 +157,8 @@ void WebServer::handlePing(HTTPRequest * req, HTTPResponse * res) {
       res->print(pinger.deviceStatus[i]);
     return;
   }
-  Serial.println("[Debug] Unauthenticated Client!");
+
+  LOGD("WebServer", "Unauthenticated Client!");
   req->discardRequestBody();
   res->setStatusCode(301);
   res->setStatusText("Moved Permanently");
@@ -168,14 +168,14 @@ void WebServer::handlePing(HTTPRequest * req, HTTPResponse * res) {
 // 建立根(控制喚醒)頁面
 void WebServer::handleRoot(HTTPRequest * req, HTTPResponse * res) {
   if (is_authenticated(req)) {
-    Serial.println("[Debug] Client Authenticated!");
+    LOGD("WebServer", "Unauthenticated Client!");
     res->setStatusCode(200);
     res->setStatusText("OK");
     res->setHeader("Content-Type", "text/html; charset=utf-8");
     res->println(index_html);
     return;
   }
-  Serial.println("[Debug] Unauthenticated Client!");
+  LOGD("WebServer", "Unauthenticated Client!");
   req->discardRequestBody();
   res->setStatusCode(301);
   res->setStatusText("Moved Permanently");
@@ -214,26 +214,23 @@ bool WebServer::is_authenticated(HTTPRequest * req){
 void connectWifi(int timeout) { 
   int timeCounter = 0;
   
-  Serial.printf("[WiFi] Connecting to %s ", WIFI_SSID);
+  LOGI("WiFi", "Connecting to %s", WIFI_SSID);
   WiFi.begin(WIFI_SSID, WIFI_PSK); 
   while (WiFi.status() != WL_CONNECTED) {
     delay(250);
     timeCounter ++;
-    Serial.print(".");
     OLED.draw_WIFI(timeCounter%2 ? gImage_wifi_connecting : gImage_wifi_blank);
     if (timeCounter > timeout) break;
   }
   
   if (timeCounter > timeout) {
-    Serial.println("\n[WiFi] Connect timeout, trying to reconnect.");
+    LOGE("WiFi", "Connect timeout, trying to reconnect");
     OLED.draw_WIFI(gImage_wifi_failure);
     connectWifi(20);
     return;
   }
 
-  Serial.println("\n[WiFi] Connect success.");
-  Serial.print("[WiFi] Local IP: "); Serial.println(WiFi.localIP());
-  Serial.print("[WiFi] Subnet Mask: "); Serial.println(WiFi.subnetMask());
+  LOGI("WiFi", "Connect success.\n Local IP:%s\n Subnet Mask: %s", WiFi.localIP().toString(), WiFi.subnetMask().toString());
   OLED.draw_WIFI(gImage_wifi_connected);
 
 }

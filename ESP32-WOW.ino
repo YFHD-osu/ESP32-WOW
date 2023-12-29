@@ -19,6 +19,7 @@ WebServer webServer = WebServer();
 
 void setup() {
   Serial.begin(115200); // Enable serial port logging
+  OLED.u8g2::setI2CAddress(0x7A);
   OLED.begin();         // Enable OLED display
   connectWifi(20);      // Connect to wifi until success 
   ddns.begin();         // DDNS 更新
@@ -26,6 +27,7 @@ void setup() {
   
   startTime = millis();
   xTaskCreatePinnedToCore(webserver_handle, "WebServer", 6144, NULL, 1, NULL, ARDUINO_RUNNING_CORE);
+  
 }
 
 void loop() {

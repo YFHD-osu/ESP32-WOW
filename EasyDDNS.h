@@ -4,6 +4,9 @@
 #include <WiFi.h>
 #include "config.h"
 #include <EasyDDNS.h>
+#include "icons.h"
+#include "oled.h"
+#include "logger.h"
 // #include "HTTPClient.h"
 
 class DDNSHandler : public EasyDDNSClass {
@@ -15,7 +18,7 @@ class DDNSHandler : public EasyDDNSClass {
 
   private:
     // Starts a wifi server for EasyDDNS
-    WiFiServer server = WiFiServer(80);
+    WiFiServer server = WiFiServer(81);
     unsigned long lastUpdate = millis();
 };
 
@@ -25,15 +28,12 @@ void DDNSHandler::begin(void) {
   EasyDDNSClass::service(DOMAIN_TYPE);
   EasyDDNSClass::client(DOMAIN_NAME, DOMAIN_USER, DOMAIN_PASS);
   EasyDDNSClass::onUpdate([&](const char* oldIP, const char* newIP) 
-    {
-      Serial.print("[DDNS Update] IP Change Detected: ");
-      Serial.println(newIP);
-    }
+    { LOGI("DDNS", "IP Change Detected: %s", newIP); }
   );
   update();
 }
 
-void DDNSHandler::update(int interval=-1) {
+void DDNSHandler::update(int interval) {
   if (millis() - lastUpdate < interval && interval > 0) return;
   OLED.draw_DDNS(gImage_DDNS_connecting);
   EasyDDNSClass::update(0);
