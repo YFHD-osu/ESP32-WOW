@@ -30,6 +30,7 @@ class SSD1306: public u8g2  {
   private:
     int yPos = 14;
     unsigned int lastUpdate = 0;
+    static const int statsHeight = 48;
 };
 
 void SSD1306::begin() {
@@ -59,17 +60,17 @@ void SSD1306::clearBuffer() { //清除暫存器內容
 }
 
 void SSD1306::drawWIFI(const unsigned char* image) {
-  u8g2::drawXBM(112, 48, 16, 16, image);
+  u8g2::drawXBM(112, statsHeight, 16, 16, image);
   u8g2::sendBuffer();
 }
 
 void SSD1306::drawServer(const unsigned char* image) {
-  u8g2::drawXBM(96, 48, 16, 16, image);
+  u8g2::drawXBM(96, statsHeight, 16, 16, image);
   u8g2::sendBuffer();
 }
 
 void SSD1306::drawDDNS(const unsigned char* image) {
-  u8g2::drawXBM(80, 48, 16, 16, image);
+  u8g2::drawXBM(80, statsHeight, 16, 16, image);
   u8g2::sendBuffer();
 }
 
@@ -94,9 +95,9 @@ void SSD1306::update(unsigned int interval) {
     String(hour) + "h" + 
     String(minute) + "m" + 
     String(second) + "s";
-  clearArea(0, 0, 80, 16);
+  clearArea(0, statsHeight, 80, 16);
   u8g2::setFont(u8g2_font_profont12_tf); // 使用 chinese1字型檔
-  u8g2::drawStr(0, 48+13, formatNow.c_str());
+  u8g2::drawStr(0, statsHeight+13, formatNow.c_str());
   u8g2::sendBuffer();
   u8g2::setFont(u8g2_font_unifont_t_chinese1); // 使用 chinese1字型檔
 }
