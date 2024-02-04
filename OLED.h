@@ -1,10 +1,11 @@
-#ifndef OLED_INCLUDED
-#define OLED_INCLUDED
-#if OLED_DISPLAY
-
 #include <Wire.h>
 #include <U8g2lib.h>
 #include "icons.h"
+#include "config.h"
+
+#ifndef OLED_INCLUDED
+#define OLED_INCLUDED
+#if OLED_DISPLAY
 
 class u8g2: public U8G2_SSD1306_128X64_NONAME_F_HW_I2C {
   public: 
@@ -20,117 +21,84 @@ class SSD1306: public u8g2  {
     void println(String context);
     void sendBuffer();
     void clearBuffer();
-    void beginInfo(int wifi, int ddns, int webServer);
-    void draw_WIFI(const unsigned char*);
-    void draw_DDNS(const unsigned char*);
-    void draw_SERVER(const unsigned char*);
+    void drawWIFI(const unsigned char*);
+    void drawDDNS(const unsigned char*);
+    void drawServer(const unsigned char*);
+    void update(unsigned int);
+    void clearArea(int, int, int, int);
 
   private:
     int yPos = 14;
+    unsigned int lastUpdate = 0;
 };
 
 void SSD1306::begin() {
-  
   u8g2::begin();
   u8g2::enableUTF8Print();  // 啟動 UTF8 支援
-  draw_WIFI(gImage_wifi_blank);
-  draw_SERVER(gImage_server_blank);
-  draw_DDNS(DUC_SERVICE ? gImage_DDNS_balnk : gImage_DDNS_disabled);
-  u8g2::sendBuffer();
+  u8g2::setFontMode(0);
+  u8g2::setDrawColor(1);
+  u8g2::setFont(u8g2_font_unifont_t_chinese1); // 使用 chinese1字型檔
+  drawWIFI(gImage_wifi_blank);
+  drawServer(gImage_server_blank);
+  drawDDNS(DUC_SERVICE ? gImage_DDNS_balnk : gImage_DDNS_disabled);
+  update(-1);
   return;
 }
 
 void SSD1306::println(String context) {
-  u8g2::setFont(u8g2_font_unifont_t_chinese1); // 使用 chinese1字型檔
   u8g2::setCursor(0, yPos); //自動換行
   u8g2::print(context);
   yPos += 16;
   return;
 }
 
-void SSD1306::clearBuffer () { //清除暫存器內容
+void SSD1306::clearBuffer() { //清除暫存器內容
   yPos = 14;
   u8g2::clearBuffer();
   return;
 }
 
-void SSD1306::draw_WIFI(const unsigned char* image) {
-  u8g2::setFontMode(0);
-  u8g2::setDrawColor(1);
-  u8g2::drawXBM(112, 0, 16, 16, image);
+void SSD1306::drawWIFI(const unsigned char* image) {
+  u8g2::drawXBM(112, 48, 16, 16, image);
   u8g2::sendBuffer();
 }
 
-void SSD1306::draw_SERVER(const unsigned char* image) {
-  u8g2::setFontMode(0);
-  u8g2::setDrawColor(1);
-  u8g2::drawXBM(96, 0, 16, 16, image);
+void SSD1306::drawServer(const unsigned char* image) {
+  u8g2::drawXBM(96, 48, 16, 16, image);
   u8g2::sendBuffer();
 }
 
-void SSD1306::draw_DDNS(const unsigned char* image) {
-  u8g2::setFontMode(0);
-  u8g2::setDrawColor(1);
-  u8g2::drawXBM(80, 0, 16, 16, image);
+void SSD1306::drawDDNS(const unsigned char* image) {
+  u8g2::drawXBM(80, 48, 16, 16, image);
   u8g2::sendBuffer();
 }
 
-void SSD1306::beginInfo(int wifi, int ddns, int webServer){ // 更新開機時的OLED顯示內容
-  u8g2::clearBuffer();
-  yPos = 14;
-  u8g2::setFont(u8g2_font_unifont_t_chinese1); // 使用 chinese1字型檔
-  u8g2::setCursor(0, yPos); //自動換行
-  u8g2::print("啟動進度:");
+void SSD1306::clearArea(int x, int y, int w, int h) {
+  u8g2::setFontMode(1);
+  u8g2::setDrawColor(0);
+  u8g2::drawRBox(x, y, w, h, 0);
+  u8g2::setFontMode(0);
+  u8g2::setDrawColor(1);
+}
 
-  yPos += 16;
-  u8g2::setCursor(0, yPos); //自動換行
-  switch(wifi){
-    case 0:
-      u8g2::print("☒WiFi連線");
-      break;
-    case 1:
-      u8g2::print("☑WiFi連線");
-      break;
-    case 2:
-      u8g2::print("→WiFi連線");
-      break;
-    case 3:
-      u8g2::print("⧖WiFi連線");
-  }
-
-  yPos += 16;
-  u8g2::setCursor(0, yPos); //自動換行
-  switch(ddns){
-    case 0:
-      u8g2::print("☒DNS更新");
-      break;
-    case 1:
-      u8g2::print("☑DNS更新");
-      break;
-    case 2:
-      u8g2::print("→DNS更新");
-      break;
-    case 3:
-      u8g2::print("⧖DNS更新");
-  }
-
-  yPos += 16;
-  u8g2::setCursor(0, yPos); //自動換行
-  switch(webServer){
-    case 0:
-      u8g2::print("☒網站伺服器");
-      break;
-    case 1:
-      u8g2::print("☑網站伺服器");
-      break;
-    case 2:
-      u8g2::print("→網站伺服器");
-      break;
-    case 3:
-      u8g2::print("⧖網站伺服器");
-  }
+void SSD1306::update(unsigned int interval) {
+  const unsigned int now = millis();
   
+  if (lastUpdate - now < interval && interval > 0) return;
+  int day = now%(24*60*60*60*1000) / (24*60*60*1000);
+  int hour = now%(60*60*60*1000) / (60*60*1000);
+  int minute = now%(60*60*1000) / (60*1000);
+  int second = now%(60*1000) / 1000;
+  String formatNow = 
+    String(day) + "d" + 
+    String(hour) + "h" + 
+    String(minute) + "m" + 
+    String(second) + "s";
+  clearArea(0, 0, 80, 16);
+  u8g2::setFont(u8g2_font_profont12_tf); // 使用 chinese1字型檔
+  u8g2::drawStr(0, 48+13, formatNow.c_str());
   u8g2::sendBuffer();
+  u8g2::setFont(u8g2_font_unifont_t_chinese1); // 使用 chinese1字型檔
 }
 
 #else
@@ -148,7 +116,6 @@ void SSD1306::begin () {}
 void SSD1306::println (String context) {}
 void SSD1306::sendBuffer () {}
 void SSD1306::clearBuffer () {}
-void SSD1306::beginInfo (int wifi, int ddns, int webServer) {}
 
 #endif
 

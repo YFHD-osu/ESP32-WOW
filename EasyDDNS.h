@@ -34,10 +34,13 @@ void DDNSHandler::begin(void) {
 }
 
 void DDNSHandler::update(int interval) {
-  if (millis() - lastUpdate < interval && interval > 0) return;
-  OLED.draw_DDNS(gImage_DDNS_connecting);
+  const unsigned int now = millis();
+  if (now - lastUpdate < interval && interval > 0) return;
+  lastUpdate = now;
+  OLED.drawDDNS(gImage_DDNS_connecting);
   EasyDDNSClass::update(0);
-  OLED.draw_DDNS(gImage_DDNS_connected);
+  LOGI("DUC", "Peroidic IP updated.");
+  OLED.drawDDNS(gImage_DDNS_connected);
 }
 #else
 void DDNSHandler::begin(void) {}

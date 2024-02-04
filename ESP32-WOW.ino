@@ -1,12 +1,11 @@
-#include "config.h"   // 導入設定
-#include "easyddns.h" // DDNS更新
-#include "Ping.h"     // Ping功能
-
-#include "webPages.h" // 網頁原碼
-#include "webServer.h"
-#include "OLED.h"     // OLED狀態
-
 #include <WiFi.h>
+
+#include "oled.h"
+#include "ping.h"
+#include "config.h"
+#include "easyddns.h"
+#include "webPages.h"
+#include "webServer.h"
 
 #if CONFIG_FREERTOS_UNICORE
 #define ARDUINO_RUNNING_CORE 0
@@ -32,6 +31,7 @@ void setup() {
 
 void loop() {
   ddns.update(10*1000);
+  OLED.update(300);
   if (millis() - startTime > 60*60*1000) {
     ESP.restart();
   };

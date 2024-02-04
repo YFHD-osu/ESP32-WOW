@@ -67,10 +67,10 @@ void WebServer::begin(void) {
   WebServer::start();
   if (WebServer::isRunning()) {
     LOGI("WebServer", "Server is ready");
-    OLED.draw_SERVER(gImage_server_connected);
+    OLED.drawServer(gImage_server_connected);
   } else {
     LOGE("WebServer", "Server starts failed, restarting EPS32");
-    OLED.draw_SERVER(gImage_server_failure);
+    OLED.drawServer(gImage_server_failure);
     delay(1000);
     ESP.restart();
   }
@@ -219,18 +219,18 @@ void connectWifi(int timeout) {
   while (WiFi.status() != WL_CONNECTED) {
     delay(250);
     timeCounter ++;
-    OLED.draw_WIFI(timeCounter%2 ? gImage_wifi_connecting : gImage_wifi_blank);
+    OLED.drawWIFI(timeCounter%2 ? gImage_wifi_connecting : gImage_wifi_blank);
     if (timeCounter > timeout) break;
   }
   
   if (timeCounter > timeout) {
     LOGE("WiFi", "Connect timeout, trying to reconnect");
-    OLED.draw_WIFI(gImage_wifi_failure);
+    OLED.drawWIFI(gImage_wifi_failure);
     connectWifi(20);
     return;
   }
 
   LOGI("WiFi", "Connect success.\n Local IP:%s\n Subnet Mask: %s", WiFi.localIP().toString(), WiFi.subnetMask().toString());
-  OLED.draw_WIFI(gImage_wifi_connected);
+  OLED.drawWIFI(gImage_wifi_connected);
 
 }
