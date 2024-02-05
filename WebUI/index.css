@@ -1,71 +1,255 @@
-  body { 
-    background-image: radial-gradient(circle, #2a2a2a, #212121, #191919, #0f0f0f, #000000);
-  }
+body { 
+  background-image: radial-gradient(circle, #2a2a2a, #212121, #191919, #0f0f0f, #000000);
+}
 
+* { padding: 0; margin: 0; }
+html, body, #fullheight {
+  min-height: auto !important;
+  height: 100vh; /*給 Safari 以外的瀏覽器讀取*/
+  height: calc(var(--vh, 1vh) * 100);
+  /*
+  height: 100vh;*/
+}
+
+.center{
+  display: flex;
+  justify-content: center; 
+  align-items: center;
+  vertical-align: middle;
+}
+
+.container{
+  background: rgb(23, 25, 24);
+  border-style: solid;
+  border-color: rgb(58, 60, 58);
+  border-radius: 20px;
+  border-width: 1px;
+  padding: 20px;
+  width: 500px;
+  min-height: 500px;
+  height: 75vh;
+  display: inline-block;
+}
+
+/* 標題單元 */
+.titleDiv { 
+  display : flex;
+  align-items: center;
+  transform: translate(25%, 0%);
+}
+
+.titleIcon{
+  width: 60px;
+  height: 60px;
+  grid-column-start: 2;
+  grid-column-end: 3;
+  display: inline-flex;
+}
+
+.titleText{
+  font-size: 34px;
+  text-align: center;
+  color: white;
+  display: inline-flex;
+  margin-left: 10px;
+}
+
+/* 裝置單元 */
+.dot {
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  white-space: nowrap;
+  background-color: #f3c53f;
+  grid-column: 1;
+  grid-row: 3;
+  align-self: center;
+  margin-left: auto;
+}
+
+.deviceCard{
+  width: 460px;
+  height: 110px;
+  margin: 15px auto 15px auto;
+  padding: 10px;
+  display: block;
+  background-color: rgb(56, 56, 55);
+  border-radius: 10px;
+  border: 0px;
+}
+
+.deviceCard:active{
+  background-color: rgb(13, 14, 15);
+}
+
+.deviceGrid{
+  grid-template-columns: 90px 1fr;
+  grid-template-rows: 0.33fr 0.33fr 0.33fr;
+  display: grid;
+  align-items: end;
+}
+
+.deviceLogo{
+  height: 90px;
+  width: 90px;
+  margin: auto;
+  grid-column: 1;
+  grid-row: 1 / 4;
+}
+
+.deviceName{
+  font: 22px sans-serif;
+  color: white;
+  margin: auto auto 0px 5px;
+  display: table-cell;
+  vertical-align: bottom;
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.deviceIP{
+  color: gray;
+  font: 17px sans-serif;
+  margin-right: auto;
+  margin-left: 5px;
+  margin-top: auto;
+  margin-bottom: auto;
+  grid-column: 2;
+  grid-row: 2;
+}
+
+.deviceStatusImage{
+  height: 20px;
+  width: 20px;
+  margin: 4px auto auto 10px;
+  display: inline-block;
+  grid-column: 2;
+  grid-row: 3;
+}
+
+.statusText{
+  color: white;
+  font: 15px sans-serif;
+  margin-left: 30px;
+  display: inline-flex;
+  grid-column: 2;
+  grid-row: 3;
+}
+
+/* 按鈕單元 */
+.functionContainer{
+  position: absolute;
+  height: auto;
+  width: 500px;
+  margin-top: 9px;
+}
+
+.logoutButton {
+  position: relative;
+  width: 230px;
+  height: 45px;
+  background-color: red;
+  color: white;
+  border: 0px;
+  margin: 0px 9px 0px 9px;
+  text-align: center;
+  font-size: 20px;
+  cursor: pointer;
+  border-radius: 50px;
+}
+
+.refreshButton{
+  width: 230px;
+  height: 45px;
+  background-color: rgb(4, 97, 196);
+  color: white;
+  border: 0px;
+  margin: 0px 9px 0px 9px;
+  text-align: center;
+  font-size: 20px;
+  cursor: pointer;
+  border-radius: 50px;
+}
+
+.deviceContainer{
+  height: calc(75vh - 70px - 45px);
+  overflow-y: scroll;
+  min-height: 385px;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-track {
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  margin: 0px 0 5px 0;
+}
+::-webkit-scrollbar-thumb {
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+  background: rgb(219,219,219);
+}
+
+@media (max-width: 990px) { 
   * { padding: 0; margin: 0; }
-  html, body, #fullheight {
-    min-height: auto !important;
+  body, #fullheight {
+    min-width: 250px !important;
     height: 100vh; /*給 Safari 以外的瀏覽器讀取*/
     height: calc(var(--vh, 1vh) * 100);
-    /*
-    height: 100vh;*/
+    overflow: hidden;
+    overflow-x: hidden;
   }
 
-  .center{
-    display: flex;
-    justify-content: center; 
-    align-items: center;
-    vertical-align: middle;
-  }
-
-  .container {
-    background: rgb(23, 25, 24);
-    border-style: solid;
-    border-color: rgb(58, 60, 58);
-    border-radius: 20px;
-    border-width: 1px;
-    margin: 30px auto 30px auto;
-    padding: 20px;
-    width: 500px;
-    min-height: 500px;
-    height: 75vh;
+  .container{
+    position: absolute;
     display: block;
-    align-items: center;
+    width: auto;
+    height: auto;
+    bottom:0;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: 20px;
   }
 
-  /* 標題單元 */
-  .titleGrid { 
-    width: 500px;
-    height: auto;
-    margin-bottom: 0px;
-    display: grid;
-    grid-template-columns: [column-1] 0.5fr [column-2] 60px [column-3] auto [column-4] 0.5fr;
-    grid-template-rows: [row-1] 1fr [row-2] 10px ;
+  .dot {
+    height: 5vw;
+    width: 5vw;
+  }
+
+  .titleDiv {
+    width: 100%;
+    display: inline-flex;
+    align-items : center;
+    justify-content: center;
+    padding: 0px, 0px, 0px, 0px;
+    margin: 0px, 0px, 0px, 0px;
+    right: 0;
+    left: 0;
+    top: 0;
+    transform: translateX(0%);
   }
 
   .titleIcon{
-    width: 60px;
-    height: 60px;
-    grid-column-start: 2;
-    grid-column-end: 3;
+    width: 12vw;
+    height: 12vw;
   }
 
   .titleText{
-    font-size: 52px;
-    line-height: 0px;
-    margin-top: 32px;
-    margin-left: 20px;
+    font-size: 10vw;
   }
 
   /* 裝置單元 */
   .deviceCard{
-    width: 460px;
-    height: 120px;
-    margin: 15px auto 15px auto;
+    height: calc(20vw + 20px);
     display: block;
+    padding: 10px;
+    margin: 10px auto 10px auto;
     background-color: rgb(56, 56, 55);
     border-radius: 10px;
-    border: 0px;
+    width: 100%;
+    border-radius: 30px;
   }
 
   .deviceCard:active{
@@ -73,251 +257,64 @@
   }
 
   .deviceGrid{
-    grid-template-columns: 120px 1fr;
+    grid-template-columns: 20vw 1fr;
     grid-template-rows: 0.33fr 0.33fr 0.33fr;
     display: grid;
   }
 
   .deviceLogo{
-    height: 120px;
-    width: 120px;
-    margin: auto;
+    height: 20vw;
+    width: 20vw;
     grid-column: 1;
     grid-row: 1 / 4;
   }
 
   .deviceName{
-    font: 25px sans-serif;
+    font: 6vw sans-serif;
     color: white;
-    margin: auto auto 0px 5px;
-    display: table-cell;
-    vertical-align: bottom;
+    margin-left: 5px;
     grid-column: 2;
     grid-row: 1;
   }
 
   .deviceIP{
     color: gray;
-    font: 20px sans-serif;
-    margin: auto auto auto 10px;
+    font: 5vw sans-serif;
+    margin-left: 5px;
     vertical-align: center;
-    margin-left: 10px;
     grid-column: 2;
     grid-row: 2;
   }
 
-  .deviceStatusImage{
-    height: 20px;
-    width: 20px;
-    margin: 4px auto auto 10px;
-    display: inline-block;
-    grid-column: 2;
-    grid-row: 3;
-  }
-
-  .deviceStatusText{
-    color: white;
-    font: 20px sans-serif;
-    margin: 0px auto auto 35px;
-    display: inline-block;
-    grid-column: 2;
-    grid-row: 3;
+  .deviceContainer{
+    height: calc(100vh - 120px - 200px);
+    overflow-y: scroll;
+    min-height: 460px;
   }
 
   /* 按鈕單元 */
   .functionContainer{
+    display: flex;
+    width: 100%;
     position: absolute;
-    height: auto;
-    width: 500px;
-    margin-top: 9px;
+    white-space: nowrap;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin-bottom: 10px;
+    justify-content: center;
+    transform: translateX(0%);
   }
 
   .logoutButton {
-    position: relative;
-    width: 230px;
-    height: 45px;
-    background-color: red;
-    color: white;
-    border: 0px;
-    margin: 0px 9px 0px 9px;
-    text-align: center;
-    font-size: 20px;
-    cursor: pointer;
-    border-radius: 50px;
+    height: 5vh;
+    font-size: 5vw;
+    width: 50vw;
   }
 
   .refreshButton{
-    width: 230px;
-    height: 45px;
-    background-color: rgb(4, 97, 196);
-    color: white;
-    border: 0px;
-    margin: 0px 9px 0px 9px;
-    text-align: center;
-    font-size: 20px;
-    cursor: pointer;
-    border-radius: 50px;
+    height: 5vh;
+    font-size: 5vw;
+    width: 50vw;
   }
-
-  .deviceContainer{
-    height: calc(75vh - 70px - 45px);
-    overflow-y: scroll;
-    min-height: 385px;
-  }
-
-  ::-webkit-scrollbar {
-    width: 5px;
-  }
-  ::-webkit-scrollbar-track {
-    -webkit-border-radius: 10px;
-    border-radius: 10px;
-    margin: 0px 0 5px 0;
-  }
-  ::-webkit-scrollbar-thumb {
-    -webkit-border-radius: 4px;
-    border-radius: 4px;
-    background: rgb(219,219,219);
-  }
-
-  @media (max-width: 990px) { 
-    * { padding: 0; margin: 0; }
-    body, #fullheight {
-      min-width: 250px !important;
-      height: 100vh; /*給 Safari 以外的瀏覽器讀取*/
-      height: calc(var(--vh, 1vh) * 100);
-      overflow: hidden;
-      overflow-x: hidden;
-    }
-
-    .container{
-      margin: 30px !important;
-      width: 90%;
-      min-height: 450px !important;
-      min-width: 650px !important;
-      height: calc(100vh - 120px);
-      position: relative;
-    }
-
-    .titleGrid{
-      width: 100%;
-      align-items: center;
-      grid-template-columns: [column-1] 0.5fr [column-2] 10vw [column-3] auto [column-4] 0.5fr;
-      grid-template-rows: [row-1] 1fr [row-2] 15px ;
-    }
-
-    .titleIcon{
-      width: 10vw;
-      height: 10vw;
-      grid-column-start: 2;
-      grid-column-end: 3;
-    }
-  
-    .titleText{
-      font-size: 10vw;
-      line-height: 0px;
-      margin-top: 18px;
-      margin-left: 20px;
-    }
-
-    /* 裝置單元 */
-    .deviceCard{
-      width: 90%;
-      height: 20vw;
-      margin: 15px auto 15px auto;
-      display: block;
-      background-color: rgb(56, 56, 55);
-      border-radius: 10px;
-      border: 0px;
-    }
-
-    .deviceCard:active{
-      background-color: rgb(13, 14, 15);
-    }
-
-    .deviceGrid{
-      height: auto;
-      width: auto;
-      grid-template-columns: 25% 1fr;
-      grid-template-rows: 0.33fr 0.33fr 0.33fr;
-      display: grid;
-    }
-
-    .deviceLogo{
-      height: 100%;
-      width: 100%;
-      margin: auto;
-      grid-column: 1;
-      grid-row: 1 / 4;
-    }
-
-    .deviceName{
-      font: 300% sans-serif;
-      color: white;
-      margin: auto auto 0px 5px;
-      line-height: 40px;
-      display: table-cell;
-      vertical-align: bottom;
-      grid-column: 2;
-      grid-row: 1;
-    }
-
-    .deviceIP{
-      color: gray;
-      font: 250% sans-serif;
-      margin: auto auto auto 40px;
-      vertical-align: center;
-      margin-left: 10px;
-      grid-column: 2;
-      grid-row: 2;
-    }
-
-    .deviceStatusImage{
-      height: 3vw;
-      width: 3vw;
-      margin: 4px auto auto 10px;
-      display: inline-block;
-      grid-column: 2;
-      grid-row: 3;
-    }
-
-    .deviceStatusText{
-      color: white;
-      font: 270% sans-serif;
-      margin: 0px auto auto 50px;
-      line-height: 42px;
-      display: inline-block;
-      grid-column: 2;
-      grid-row: 3;
-    }
-
-    /* 按鈕單元 */
-    .functionContainer{
-      width: 95%;
-      height: auto;
-      margin-top: auto;
-      position: absolute;
-      bottom: 15px;
-      display: flex;
-    }
-
-    .logoutButton {
-      width: 40vw;
-      height: 10vw;
-      font-size: 5vw;
-      line-height: 2vw;
-      margin: 0px auto 0px auto;
-    }
-
-    .refreshButton{
-      width: 40vw;
-      height: 10vw;
-      font-size: 5vw;
-      line-height: 1vw;
-    }
-
-    .deviceContainer{
-      height: calc(100vh - 120px - 225px);
-      overflow-y: scroll;
-      min-height: 460px;
-    }
-  }
+}

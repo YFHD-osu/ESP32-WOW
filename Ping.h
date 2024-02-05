@@ -4,6 +4,8 @@
 #include "config.h"
 #include <ESP32Ping.h>
 
+const int pins[] = {4, 0, 2, 15};
+
 class PingHandler {
   public:
     void init();
@@ -15,6 +17,10 @@ class PingHandler {
 };
 
 void PingHandler::init() {
+  for(int i=0; i<4 ; i++) {
+    pinMode(pins[i], OUTPUT);
+    digitalWrite(pins[i], LOW);
+  }
   update();
 }
 
@@ -22,8 +28,10 @@ void PingHandler::update(int interval) {
   if (millis() - lastPing < interval && interval > 0) return;
   lastPing = millis();
   
-  for (int i=0 ; i<DEVICE_COUNT ; i++)
+  for (int i=0 ; i<DEVICE_COUNT ; i++) {
     deviceStatus[i] = ping_start(ip[i], 1, 1, 32, 100);
+    digitalWrite(pins[i], deviceStatus[i]);
+  }
 
 }
   

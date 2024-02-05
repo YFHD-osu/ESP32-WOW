@@ -2,50 +2,48 @@
 <html>
   <head>
     <title>YFHD 網路喚醒</title>
-    <link rel="shortcut icon" type="image/png" href="https://yfhd-osu.github.io/ESP32-WOW/WebUI/favicon.png"/>
+    <link rel="shortcut icon" type="image/png" href="favicon.png"/>
   </head>
 
-  
-  <link rel="stylesheet" type="text/css" href="https://yfhd-osu.github.io/ESP32-WOW/WebUI/index.css"/> <!--   Load Style -->
-  <script src="https://yfhd-osu.github.io/ESP32-WOW/WebUI/index.js"></script>
-  <link rel="icon" href="https://yfhd-osu.github.io/ESP32-WOW/WebUI\Icons\Icon.png" type="image/x-icon" />
+  <base href="/ESP32-WOW/">
+  <link rel="stylesheet" type="text/css" href="index.css"/> <!--   Load Style -->
+  <script src="index.js"></script>
+  <link rel="icon" href="\Icons\Icon.png" type="image/x-icon" />
 
   <body background="body" class="center" wi>
     <div class="container">
 
-      <div class="titleGrid"> 
-        <img class="titleIcon" src="https://yfhd-osu.github.io/ESP32-WOW/WebUI/Icons\device.png">
-        <h1 class="titleText" style="text-align: center; line-height: 0px; color: white;">可用的裝置</h1>
+      <div class="titleDiv"> 
+        <img class="titleIcon" src="Icons/device.png">
+        <h1 class="titleText">可用的裝置</h1>
       </div>
 
       <div class="deviceContainer">
         <button class="deviceCard" onclick="sendWakeUp(0)">
           <div class="deviceGrid"> 
-            <img class="deviceLogo" src="https://yfhd-osu.github.io/ESP32-WOW/WebUI/Icons\Windows11Logo.png">
+            <img class="deviceLogo" src="Icons/Windows11Logo.png">
             <p class="deviceName"> YFHD-PC </p>
-            <p class="deviceIP"> 內網IP: 192.168.1.110 </p>
-            <img class="deviceStatusImage" id="deviceImg0" src="https://yfhd-osu.github.io/ESP32-WOW/WebUI/Icons\pendingDot.png">
-            <p class="deviceStatusText" id="deviceStatus0"> 連線中... </p>
+            <p class="deviceIP"> 內網: 192.168.1.110 </p>
+            <span class="dot" id="status_dev_0">
           </div>
         </button>
+        
 
         <button class="deviceCard" onclick="sendWakeUp(1)">
           <div class="deviceGrid"> 
-            <img class="deviceLogo" src="https://yfhd-osu.github.io/ESP32-WOW/WebUI/Icons\WindowsServerLogo.png">
+            <img class="deviceLogo" src="Icons/WindowsServerLogo.png">
             <p class="deviceName"> YFHD-SERVER </p>
             <p class="deviceIP"> 內網IP: 192.168.1.109 </p>
-            <img class="deviceStatusImage" id="deviceImg1" src="https://yfhd-osu.github.io/ESP32-WOW/WebUI/Icons\pendingDot.png">
-            <p class="deviceStatusText" id="deviceStatus1"> 連線中... </p>
+            <span class="dot" id="status_dev_1">
           </div>
         </button>
 
         <button class="deviceCard" onclick="sendWakeUp(2)">
           <div class="deviceGrid"> 
-            <img class="deviceLogo" src="https://yfhd-osu.github.io/ESP32-WOW/WebUI/Icons\MacOsLogo.png">
+            <img class="deviceLogo" src="Icons/MacOsLogo.png">
             <p class="deviceName"> Maggie-Hackintosh </p>
             <p class="deviceIP"> 內網IP: 192.168.1.108 </p>
-            <img class="deviceStatusImage" id="deviceImg2" src="https://yfhd-osu.github.io/ESP32-WOW/WebUI/Icons\pendingDot.png">
-            <p class="deviceStatusText" id="deviceStatus2"> 連線中... </p>
+            <span class="dot" id="status_dev_2">
           </div>
         </button>
 

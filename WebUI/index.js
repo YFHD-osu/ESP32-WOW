@@ -20,8 +20,10 @@ function refresh() {
     deviceStatus = xhr.response.split("");
     for (let i=0; i < deviceStatus.length; i++) {
       console.log(parseInt(deviceStatus[i]));
-      document.getElementById(`deviceStatus${i}`).innerHTML = 
-      (parseInt(deviceStatus[i]) == 1) ? "線上" : "離線";
+      var isOnline = parseInt(deviceStatus[i]) == 1;
+      var dot = document.getElementById(`status_dev_${i}`);
+      dot.style.backgroundColor = isOnline ? "#68bd5a" : "#f36356";
+
       document.getElementById(`deviceImg${i}`).src = 
       (parseInt(deviceStatus[i]) == 1) ? "https://yfhd-osu.github.io/ESP32-WOW/WebUI/Icons/onlineDot.png" : "https://yfhd-osu.github.io/ESP32-WOW/WebUI/Icons\\offlineDot.png";
     }
