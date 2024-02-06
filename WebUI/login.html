@@ -2,30 +2,31 @@
 <html>
   <head>
     <title>YFHD 網路喚醒 - 登入</title>
-    <link rel="shortcut icon" type="image/png" href="https://yfhd-osu.github.io/ESP32-WOW/WebUI/favicon.png"/>
+    <link rel="shortcut icon" type="image/png" href="/favicon.png"/>
   </head>
 
-  <link rel="stylesheet" type="text/css" href="https://yfhd-osu.github.io/ESP32-WOW/WebUI/login.css"/> <!--   Load Style -->
-  
+  <link rel="stylesheet" type="text/css" href="/login.css"/> <!--   Load Style -->
+  <meta name="theme-color" content="#000000">
+
   <body background="body" class="center">
-      <div class="container">
+    <div class="container">
 
-        <div class="loginTitleGrid"> 
-          <img class="loginImage" src="https://yfhd-osu.github.io/ESP32-WOW/WebUI/Icons\LoginArrowDark.png" width="60px" height="60px" alt="登入以繼續">
-          <h1 class="loginText">登入以繼續</h1>
-        </div>
-
-        <div class="loginFormGrid">
-          <img class="arduinoLogo" src="https://yfhd-osu.github.io/ESP32-WOW/WebUI/Icons\ArduinoLogo.png" alt="一張圖片">
-          <form name="loginForm" class="loginForm" action="/login" method="post">
-            <input name="username" placeholder="帳號" class="usernameInput" autocomplete="off" autocorrect="off" spellcheck="false" aria-required="true" required="required" id="usernameInputBox"/>
-            <input name="password" placeholder="密碼" class="passwordInput" autocomplete="off" autocorrect="off" spellcheck="false" aria-required="true" required="required" type="password" id="passwordInputBox"/>
-            <input name="submitButton" type="submit" value="登入" class="loginButton" title="登入" /> <!-- onclick="submitForm()" -->
-          </form>
-          <a href="https://google.com" class="dynamicSecurity"> 安全受 Dynamic Security™ 保障</a>
-        </div>
-
+      <div class="titleDiv">
+        <img class="loginImage" src="/assets\login_arrow.svg" width="60px" height="60px" alt="登入以繼續">
+        <h1 class="loginText">登入以繼續</h1>
       </div>
+
+      <div class="loginDiv">
+        <img class="arduinoLogo" src="/assets\ArduinoLogo.png" alt="一張圖片">
+        <form name="loginForm" class="loginForm" action="/login" method="post">
+          <input name="username" placeholder="帳號" class="usernameInput" autocomplete="off" autocorrect="off" spellcheck="false" aria-required="true" required="required" id="usernameInputBox"/>
+          <input name="password" placeholder="密碼" class="passwordInput" autocomplete="off" autocorrect="off" spellcheck="false" aria-required="true" required="required" type="password" id="passwordInputBox"/>
+          <input name="submitButton" type="submit" value="登入" class="loginBtn" title="登入" /> <!-- onclick="submitForm()" -->
+        </form>
+        <a href="https://google.com" class="dynamicSecurity"> 安全受 Dynamic Security™ 保障</a>
+      </div>
+
+    </div>
   </body>
 
 </html>

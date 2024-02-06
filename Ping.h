@@ -21,7 +21,6 @@ void PingHandler::init() {
     pinMode(pins[i], OUTPUT);
     digitalWrite(pins[i], LOW);
   }
-  update();
 }
 
 void PingHandler::update(int interval) {
