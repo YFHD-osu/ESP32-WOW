@@ -23,9 +23,6 @@ function refresh() {
       var isOnline = parseInt(deviceStatus[i]) == 1;
       var dot = document.getElementById(`status_dev_${i}`);
       dot.style.backgroundColor = isOnline ? "#68bd5a" : "#f36356";
-
-      document.getElementById(`deviceImg${i}`).src = 
-      (parseInt(deviceStatus[i]) == 1) ? "https://yfhd-osu.github.io/ESP32-WOW/WebUI/Icons/onlineDot.png" : "https://yfhd-osu.github.io/ESP32-WOW/WebUI/Icons\\offlineDot.png";
     }
     return;
   }
