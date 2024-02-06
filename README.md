@@ -8,8 +8,8 @@ Using ESP32 to setup a HTTPS web server and handle WOL
 request is a power-saving method.
 
 ## Webpage demostration
-- Wake on lan gui: [link](https://yfhd-osu.github.io/ESP32-WOW/WebUI/index.html)
-- Login page: [link](https://yfhd-osu.github.io/ESP32-WOW/WebUI/login.html)
+- Wake on lan gui: [link](https://yfhd-osu.github.io/ESP32-WOW/web/index.html)
+- Login page: [link](https://yfhd-osu.github.io/ESP32-WOW/web/login.html)
 
 ## Libraries dependence
 - [u8g2](https://github.com/olikraus/u8g2) - OLED display driver
