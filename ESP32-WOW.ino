@@ -32,7 +32,7 @@ void setup() {
 void loop() {
   ddns.update(10*1000);
   OLED.update(300);
-  pinger.update(1000);
+  pinger.update(2500);
   if (millis() - startTime > 60*60*1000) {
     ESP.restart();
   };

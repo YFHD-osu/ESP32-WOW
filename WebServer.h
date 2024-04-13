@@ -151,7 +151,6 @@ void WebServer::handleSession(HTTPRequest *req, HTTPResponse * res) {
 //處理更新裝置
 void WebServer::handlePing(HTTPRequest * req, HTTPResponse * res) {
   if (is_authenticated(req)) {
-    pinger.update(1000);
     res->setHeader("Content-Type", "text/plain; charset=utf-8");
     for (int i=0 ; i<3 ; i++)
       res->print(pinger.deviceStatus[i]);
