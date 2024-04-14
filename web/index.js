@@ -64,7 +64,7 @@ function onReqList(xhr) {
   if (xhr.readyState != XMLHttpRequest.DONE) return;
   if (xhr.status != 200) return;
 
-  const jsonData = JSON.parse(xhr.response);
+  const jsonData = JSON.parse(xhr.responseText);
   for (var i = 0; i < jsonData.length; i++) {
     addButton({
       id: jsonData[i].id,
