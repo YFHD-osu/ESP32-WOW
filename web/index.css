@@ -99,7 +99,7 @@ body {
   margin: 40px auto auto 95px;
 }
 
-.card-wrapper span[name=dot] {
+.card-wrapper span[id^='status-dev'] {
   height: 20px;
   width: 20px;
   border-radius: 50%;
@@ -221,18 +221,18 @@ body {
 
   .card-wrapper span[id=name] {
     font: 3rem sans-serif;
-    margin: 15px auto auto calc(20vw - 15px);
+    margin: 15px auto auto calc(20vw - 5px);
   }
   
   .card-wrapper span[id=ip] {
     font: 2rem sans-serif;
-    margin: 70px auto auto calc(20vw - 15px);
+    margin: 70px auto auto calc(20vw - 5px);
   }
   
-  .card-wrapper span[id=dot] {
+  .card-wrapper span[id^='status-dev'] {
     height: 2.6rem;
     width: 2.6rem;
-    margin: calc(20vw - 70px) auto auto calc(20vw - 65px);
+    margin: calc(20vw - 65px) auto auto calc(20vw - 65px);
   }
 
   .function-wrapper {

@@ -14,7 +14,7 @@ function onReqDone(xhr) {
 
   deviceStatus = xhr.response.split("");
   for (let i=0; i < deviceStatus.length; i++) {
-    console.log(parseInt(deviceStatus[i]));
+    // console.log(parseInt(deviceStatus[i]));
     var isOnline = parseInt(deviceStatus[i]) == 1;
     var dot = document.getElementById(`status_dev_${i}`);
     dot.style.backgroundColor = isOnline ? "#68bd5a" : "#f36356";
@@ -54,7 +54,7 @@ function addButton({image, title, lore, id} = {}) {
     <img src="${image}">
     <span id="name"> ${title} </span>
     <span id="ip"> ${lore} </span>
-    <span name="dot" id="status_dev_${id}">
+    <span name="dot" id="status-dev-${id}">
   </button>`;
   document.querySelector("#list-viewport").appendChild(element)
   return element
