@@ -54,7 +54,7 @@ function addButton({image, title, lore, id} = {}) {
     <img src="${image}">
     <span id="name"> ${title} </span>
     <span id="ip"> ${lore} </span>
-    <span id="dot" id="status_dev_${id}">
+    <span name="dot" id="status_dev_${id}">
   </button>`;
   document.querySelector("#list-viewport").appendChild(element)
   return element
@@ -74,6 +74,9 @@ function onReqList(xhr) {
     })
   }
 
+  // Draw shadow for column
+  setShadow(document.querySelector('.list-wrapper'));
+
 }
 
 function main() {
@@ -82,8 +85,6 @@ function main() {
     const el = e.currentTarget;
     setShadow(el);
   });
-
-  setShadow(document.querySelector('.list-wrapper'));
 
   var xhr = new XMLHttpRequest();
   xhr.onreadystatechange = () => onReqList(xhr);

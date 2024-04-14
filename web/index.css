@@ -99,7 +99,7 @@ body {
   margin: 40px auto auto 95px;
 }
 
-.card-wrapper span[id=dot] {
+.card-wrapper span[name=dot] {
   height: 20px;
   width: 20px;
   border-radius: 50%;
