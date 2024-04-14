@@ -9,8 +9,8 @@ const char index_html[] PROGMEM = R"rawliteral(
     
     <script src="index.js"></script>
     <meta name="theme-color" content="#000000">
-    <link rel="stylesheet" type="text/css" href="index.css"/>
-    <link rel="shortcut icon" type="image/png" href="/assets/Icon.png"/>
+    <link rel="stylesheet" type="text/css" href="https://yfhd-osu.github.io/ESP32-WOW/web/index.css"/>
+    <link rel="shortcut icon" type="image/png" href="https://yfhd-osu.github.io/ESP32-WOW/web/assets/Icon.png"/>
   </head>
 
   <body background="body" class="center" wi>
