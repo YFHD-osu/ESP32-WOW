@@ -24,7 +24,7 @@ function onReqDone(xhr) {
 
 function refresh() {
   var xhr = new XMLHttpRequest();
-  xhr.onreadystatechange = onReqDone;
+  xhr.onreadystatechange = () => onReqDone(xhr);
   xhr.open("GET", "/refresh", true);
   xhr.send();
 }
@@ -86,7 +86,7 @@ function main() {
   setShadow(document.querySelector('.list-wrapper'));
 
   var xhr = new XMLHttpRequest();
-  xhr.onreadystatechange = onReqList;
+  xhr.onreadystatechange = () => onReqList(xhr);
   xhr.open("GET", "/list", true);
   xhr.send();
   
