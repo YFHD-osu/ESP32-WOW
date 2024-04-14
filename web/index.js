@@ -16,7 +16,7 @@ function onReqDone(xhr) {
   for (let i=0; i < deviceStatus.length; i++) {
     // console.log(parseInt(deviceStatus[i]));
     var isOnline = parseInt(deviceStatus[i]) == 1;
-    var dot = document.getElementById(`status_dev_${i}`);
+    var dot = document.getElementById(`status-dev-${i}`);
     dot.style.backgroundColor = isOnline ? "#68bd5a" : "#f36356";
   }
   return;
