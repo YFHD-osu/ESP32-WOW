@@ -77,9 +77,6 @@ function onReqList(xhr) {
 }
 
 function main() {
-  setInterval(refresh, 6000); // Refresh device status every 6s
-  refresh();
-
   document.querySelector('.list-wrapper')
   .addEventListener('scroll', (e) => { // Listen to scroll view to add shadow
     const el = e.currentTarget;
@@ -93,6 +90,9 @@ function main() {
   xhr.open("GET", "/list", true);
   xhr.send();
   
+  setInterval(refresh, 6000); // Refresh device status every 6s
+  refresh();
+
 }
 
 window.onload = main;

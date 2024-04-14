@@ -6,7 +6,6 @@ const char index_html[] PROGMEM = R"rawliteral(
 <html>
   <head>
     <title>YFHD 網路喚醒</title>
-    <base href="https://yfhd-osu.github.io/ESP32-WOW/web/">
     
     <script src="index.js"></script>
     <meta name="theme-color" content="#000000">
@@ -14,13 +13,11 @@ const char index_html[] PROGMEM = R"rawliteral(
     <link rel="shortcut icon" type="image/png" href="/assets/Icon.png"/>
   </head>
 
-  
-
   <body background="body" class="center" wi>
     <div class="container">
 
       <div class="title-wrapper"> 
-        <img class="titleIcon" src="assets/device.svg">
+        <img class="titleIcon" src="https://yfhd-osu.github.io/ESP32-WOW/web/assets/device.svg">
         <h1 class="titleText">可用的裝置</h1>
       </div>
 
