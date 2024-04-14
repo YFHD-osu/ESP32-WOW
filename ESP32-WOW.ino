@@ -1,8 +1,8 @@
 #include <WiFi.h>
 
+#include "config.h"
 #include "oled.h"
 #include "ping.h"
-#include "config.h"
 #include "easyddns.h"
 #include "webPages.h"
 #include "webServer.h"
@@ -15,6 +15,8 @@
 
 unsigned long startTime;
 WebServer webServer = WebServer();
+
+
 
 void setup() {
   Serial.begin(115200); // Enable serial port logging

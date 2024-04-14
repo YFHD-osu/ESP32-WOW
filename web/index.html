@@ -2,60 +2,32 @@
 <html>
   <head>
     <title>YFHD 網路喚醒</title>
-    <link rel="shortcut icon" type="image/png" href="https://yfhd-osu.github.io/ESP32-WOW/web/assets/Icon.png"/>
+    <!-- <base href="https://yfhd-osu.github.io/ESP32-WOW/web/"> -->
+    <base href="/">
+    
+    <script src="index.js"></script>
+    <meta name="theme-color" content="#000000">
+    <link rel="stylesheet" type="text/css" href="index.css"/>
+    <link rel="shortcut icon" type="image/png" href="/assets/Icon.png"/>
   </head>
 
-  <script src="https://yfhd-osu.github.io/ESP32-WOW/web/index.js"></script>
-  <link rel="stylesheet" type="text/css" href="https://yfhd-osu.github.io/ESP32-WOW/web/index.css"/>
-  <meta name="theme-color" content="#000000">
-
-  <script src="https://unpkg.com/swup@4"></script>
-  <script>
-    const swup = new Swup();
-  </script>
-
+  
 
   <body background="body" class="center" wi>
     <div class="container">
 
-      <div class="titleDiv"> 
-        <img class="titleIcon" src="https://yfhd-osu.github.io/ESP32-WOW/web/assets/device.svg">
+      <div class="title-wrapper"> 
+        <img class="titleIcon" src="assets/device.svg">
         <h1 class="titleText">可用的裝置</h1>
       </div>
 
-      <div class="deviceContainer">
-        <button class="deviceCard" onclick="sendWakeUp(0)">
-          <div class="deviceGrid"> 
-            <img class="deviceLogo" src="https://yfhd-osu.github.io/ESP32-WOW/web/assets/Windows11Logo.png">
-            <p class="deviceName"> YFHD-PC </p>
-            <p class="deviceIP"> 內網: 192.168.1.110 </p>
-            <span class="dot" id="status_dev_0">
-          </div>
-        </button>
-        
-
-        <button class="deviceCard" onclick="sendWakeUp(1)">
-          <div class="deviceGrid"> 
-            <img class="deviceLogo" src="https://yfhd-osu.github.io/ESP32-WOW/web/assets/WindowsServerLogo.png">
-            <p class="deviceName"> YFHD-SERVER </p>
-            <p class="deviceIP"> 內網IP: 192.168.1.109 </p>
-            <span class="dot" id="status_dev_1">
-          </div>
-        </button>
-
-        <button class="deviceCard" onclick="sendWakeUp(2)">
-          <div class="deviceGrid"> 
-            <img class="deviceLogo" src="https://yfhd-osu.github.io/ESP32-WOW/web/assets/MacOsLogo.png">
-            <p class="deviceName"> Maggie-Hackintosh </p>
-            <p class="deviceIP"> 內網IP: 192.168.1.108 </p>
-            <span class="dot" id="status_dev_2">
-          </div>
-        </button>
-
+      <div class="list-wrapper">
+        <div id="list-viewport"> </div>
       </div>
-      <div class="functionContainer"> 
-        <button onclick="refresh()" class="refreshButton">更新狀態</button>
-        <button onclick="logout()" class="logoutButton">登出</button>
+
+      <div class="function-wrapper"> 
+        <button onclick="refresh()" id="refresh">更新狀態</button>
+        <button onclick="logout()" id="logout">登出</button>
       </div>
     </div>
   </body>

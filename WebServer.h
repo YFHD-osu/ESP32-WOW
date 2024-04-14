@@ -33,6 +33,7 @@ class WebServer: public HTTPServer {
 
     void begin(void);
     static bool is_authenticated(HTTPRequest*);
+    static void handleList(HTTPRequest* , HTTPResponse*);
     static void handleWake(HTTPRequest*, HTTPResponse*);
     static void handlePing(HTTPRequest*, HTTPResponse*);
     static void handle404(HTTPRequest* , HTTPResponse*);
@@ -41,6 +42,7 @@ class WebServer: public HTTPServer {
     static void handleLogout(HTTPRequest* , HTTPResponse*);
     static void handleSession(HTTPRequest* , HTTPResponse*);
 
+    ResourceNode *pingList  = new ResourceNode("/list", "GET",  &handleList);
     ResourceNode *nodeLogin   = new ResourceNode("/login",  "GET",  &handleLogin);
     ResourceNode *nodeSession = new ResourceNode("/login",  "POST", &handleSession);
     ResourceNode *nodeLogout  = new ResourceNode("/logout", "GET",  &handleLogout);
@@ -59,6 +61,7 @@ void WebServer::begin(void) {
   WebServer::registerNode(nodeSession);
   WebServer::registerNode(nodeRoot);
   WebServer::registerNode(wakeDevice);
+  WebServer::registerNode(pingList);
   WebServer::registerNode(pingDevice);
   WebServer::setDefaultNode(node404);
   
@@ -77,13 +80,12 @@ void WebServer::begin(void) {
   return;
 }
 
-// 建立登入頁面 
+// Establish login page
 void WebServer::handleLogin(HTTPRequest *req, HTTPResponse * res) {
   res->setHeader("Content-Type", "text/html; charset=utf-8");
   res->println(login_html);
 }
 
-//處理登出請求
 void WebServer::handleLogout(HTTPRequest * req, HTTPResponse * res) {
   req->discardRequestBody();
   res->setStatusCode(301);
@@ -92,7 +94,6 @@ void WebServer::handleLogout(HTTPRequest * req, HTTPResponse * res) {
   res->setHeader("Location", "/login");
 }
 
-// 處理喚醒請求
 void WebServer::handleWake(HTTPRequest *req, HTTPResponse * res) {
   if (!(is_authenticated(req))) return;
   
@@ -100,9 +101,7 @@ void WebServer::handleWake(HTTPRequest *req, HTTPResponse * res) {
   std::string deviceID;
   params->getQueryParameter("device", deviceID);
 
-  if (deviceID == "0") WOL.sendMagicPacket(MACAddress[0]); //喚醒裝置
-  else if (deviceID == "1") WOL.sendMagicPacket(MACAddress[1]);
-  else if (deviceID == "2") WOL.sendMagicPacket(MACAddress[2]);
+  WOL.sendMagicPacket(devices[std::stoi(deviceID)].mac); // Wake device
   LOGD("WebServer", "Got wake requests (Device: %s)", deviceID.c_str());
   
   req->discardRequestBody();
@@ -152,8 +151,30 @@ void WebServer::handleSession(HTTPRequest *req, HTTPResponse * res) {
 void WebServer::handlePing(HTTPRequest * req, HTTPResponse * res) {
   if (is_authenticated(req)) {
     res->setHeader("Content-Type", "text/plain; charset=utf-8");
-    for (int i=0 ; i<3 ; i++)
+    res->setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
+    for (int i=0 ; i<DEVICE_COUNT ; i++)
       res->print(pinger.deviceStatus[i]);
+    return;
+  }
+
+  LOGD("WebServer", "Unauthenticated Client!");
+  req->discardRequestBody();
+  res->setStatusCode(301);
+  res->setStatusText("Moved Permanently");
+  res->setHeader("Location", "/login");  
+}
+
+void WebServer::handleList(HTTPRequest * req, HTTPResponse * res) {
+  if (is_authenticated(req)) {
+    res->setHeader("Content-Type", "application/json; charset=UTF-8");
+    res->setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
+    res->print("[");
+    LOGI("ListDev", "OK LISTING %d devices", DEVICE_COUNT);
+    for (int i=0 ; i<DEVICE_COUNT ; i++) {
+      res->print(devices[i].toJson());
+      if (i+1 != DEVICE_COUNT) res->print(",");
+    }
+    res->print("]");
     return;
   }
 
@@ -190,21 +211,20 @@ void WebServer::handle404(HTTPRequest * req, HTTPResponse * res) {
   res->println(not_found_html);
 }
 
-//認證登入訊息
+// Validate login secret
 bool WebServer::is_authenticated(HTTPRequest * req){
   String headers = req->getHeader("Cookie").c_str();
   
   if (headers.indexOf("ESPSESSION=") == -1) return false;
 
-  // 整陀丟進 AES-256 裡加密
-  IPAddress clientIP = req->getClientIP(); // 取得使用者IP
-  char* combineResult = combineChar(clientIP); // 合成字串
+  // AES-256 encryption
+  IPAddress clientIP = req->getClientIP(); // Get client IP
+  char* combineResult = combineChar(clientIP); // Merge string
   String encryptResult = encryptAES256(key, combineResult);
-  /* For debug purpose...
-  Serial.printf("IP Addr: %d.%d.%d.%d", clientIP[0], clientIP[1], clientIP[2], clientIP[0]);
-  Serial.print("Headers: "); Serial.println(headers.c_str());
-  Serial.println("Session: " + encryptResult);
-  */
+  
+  LOGD("AUTH", "IP Addr: %d.%d.%d.%d", clientIP[0], clientIP[1], clientIP[2], clientIP[0]);
+  LOGD("AUTH", "Headers: %s", headers.c_str());
+  LOGD("AUTH", "Session: %s", encryptResult.c_str());
   
   if(headers.indexOf(encryptResult) != -1) return true;
   else return false;

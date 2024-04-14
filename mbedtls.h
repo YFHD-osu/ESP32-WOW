@@ -1,3 +1,4 @@
+#include "config.h"
 #include "mbedtls/aes.h"
 
 String encryptAES256 (char* key, char* input) {
