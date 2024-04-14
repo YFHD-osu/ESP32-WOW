@@ -7,8 +7,8 @@ const char index_html[] PROGMEM = R"rawliteral(
   <head>
     <title>YFHD 網路喚醒</title>
     
-    <script src="index.js"></script>
     <meta name="theme-color" content="#000000">
+    <script src="https://yfhd-osu.github.io/ESP32-WOW/web/index.js"></script>
     <link rel="stylesheet" type="text/css" href="https://yfhd-osu.github.io/ESP32-WOW/web/index.css"/>
     <link rel="shortcut icon" type="image/png" href="https://yfhd-osu.github.io/ESP32-WOW/web/assets/Icon.png"/>
   </head>
