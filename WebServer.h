@@ -166,6 +166,8 @@ void WebServer::handlePing(HTTPRequest * req, HTTPResponse * res) {
 
 void WebServer::handleList(HTTPRequest * req, HTTPResponse * res) {
   if (is_authenticated(req)) {
+    res->setHeader("Expires", "0");
+    res->setHeader("Pragma", "no-cache");
     res->setHeader("Content-Type", "application/json; charset=UTF-8");
     res->setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
     res->print("[");
