@@ -8,27 +8,6 @@ function logout() {
   window.open("/logout", "_self");
 }
 
-function onReqDone(xhr) {
-  if (xhr.readyState != XMLHttpRequest.DONE) return;
-  if (xhr.status != 200) return;
-
-  deviceStatus = xhr.response.split("");
-  for (let i=0; i < deviceStatus.length; i++) {
-    // console.log(parseInt(deviceStatus[i]));
-    var isOnline = parseInt(deviceStatus[i]) == 1;
-    var dot = document.getElementById(`status-dev-${i}`);
-    dot.style.backgroundColor = isOnline ? "#68bd5a" : "#f36356";
-  }
-  return;
-}
-
-function refresh() {
-  var xhr = new XMLHttpRequest();
-  xhr.onreadystatechange = () => onReqDone(xhr);
-  xhr.open("GET", "/refresh", true);
-  xhr.send();
-}
-
 function setShadow(el) {
   const isScrollable = el.scrollHeight > el.clientHeight;
   
@@ -47,16 +26,16 @@ function setShadow(el) {
   el.classList.toggle('is-top-overflowing', !isScrolledToTop);
 }
 
-function addButton({image, title, lore, id} = {}) {
+function getButton({res} = {}) {
   var element = document.createElement('div');
   element.innerHTML = `
-  <button class="card-wrapper" onclick="reqWakeUp(${id})">
-    <img src="${image}">
-    <span id="name"> ${title} </span>
-    <span id="ip"> ${lore} </span>
-    <span name="dot" id="status-dev-${id}">
+  <button class="card-wrapper" onclick="reqWakeUp(${res.id})">
+    <img src="${res.image}" alt="Custom wake on lan device logo">
+    <span id="name"> ${res.title} </span>
+    <span id="ip"> ${res.lore} </span>
+    <span name="dot" id="status-dev-${res.id}">
   </button>`;
-  document.querySelector("#list-viewport").appendChild(element)
+  
   return element
 }
 
@@ -65,34 +44,44 @@ function onReqList(xhr) {
   if (xhr.status != 200) return;
 
   const jsonData = JSON.parse(xhr.responseText);
+  var viewPort = document.querySelector("#list-viewport");
+  viewPort.innerHTML = "";
   for (var i = 0; i < jsonData.length; i++) {
-    addButton({
-      id: jsonData[i].id,
-      title: jsonData[i].na,
-      lore: jsonData[i].ip,
-      image: jsonData[i].im
-    })
+    var html = getButton({res: jsonData[i]})
+    var isOnline = parseInt(jsonData[i].st) == 1;
+    var dot = html.getElementById(`status-dev-${i}`);
+    dot.style.backgroundColor = isOnline ? "#68bd5a" : "#f36356";
+    viewPort.appendChild(html)
   }
 
   // Draw shadow for column
   setShadow(document.querySelector('.list-wrapper'));
-
 }
 
 function main() {
+  // Listen to scroll view to add shadow
   document.querySelector('.list-wrapper')
-  .addEventListener('scroll', (e) => { // Listen to scroll view to add shadow
+  .addEventListener('scroll', (e) => { 
     const el = e.currentTarget;
     setShadow(el);
   });
+  
+  setInterval(refresh, 6000); // Refresh device status every 6s
+  refresh();
 
+  testFunction()
+}
+
+function refresh() {
   var xhr = new XMLHttpRequest();
   xhr.onreadystatechange = () => onReqList(xhr);
   xhr.open("GET", "/list", true);
   xhr.send();
-  
-  setInterval(refresh, 6000); // Refresh device status every 6s
-  refresh();
+}
+
+function testFunction() {
+  if (location.hostname != "127.0.0.1") return;
+  console.log("Localhost detected! start test mode");
 
 }
 

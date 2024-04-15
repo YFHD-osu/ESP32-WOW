@@ -153,7 +153,7 @@ void WebServer::handlePing(HTTPRequest * req, HTTPResponse * res) {
     res->setHeader("Content-Type", "text/plain; charset=utf-8");
     res->setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
     for (int i=0 ; i<DEVICE_COUNT ; i++)
-      res->print(pinger.deviceStatus[i]);
+      res->print(devices[i].status);
     return;
   }
 

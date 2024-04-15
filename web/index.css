@@ -22,6 +22,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+
+  font-family: "Open-Sans", sans-serif;
 }
 
 .title-wrapper { /* "登入以繼續"文字排版 */
@@ -49,13 +51,15 @@ body {
   border: 1px solid rgb(58, 60, 58);
   background: rgb(23, 25, 24);
   padding: 20px;
-  /* height: 75vh; */
-  /* min-height: 550px; */
   
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+
+  box-shadow: 5px 8px 40px rgba(0, 0, 0, 0.7);
+  max-height: 85vh;
+  min-height: 70vh;
 }
 
 /* 裝置單元 */
@@ -73,10 +77,21 @@ body {
   justify-content: start;
   align-items: start;
   flex-direction: row;
+
+  transition: all 350ms ease-in-out;
+}
+
+.card-wrapper:hover {
+  background-color: rgb(61, 61, 60);
+  transform: scale(0.97);
+  transition: all 150ms ease-out;
 }
 
 .card-wrapper:active {
-  background-color: rgb(13, 14, 15);
+  transform: scale(0.95);
+  transition: all 50ms ease-in-out;
+  background-color: rgb(48, 48, 47);
+  opacity: 80%;
 }
 
 .card-wrapper img {
@@ -87,14 +102,14 @@ body {
 
 .card-wrapper span[id=name] {
   color: white;
-  font: 1.8rem sans-serif;
+  font-size: 1.8rem;
   position: absolute;
   margin: 10px auto auto 95px;
 }
 
 .card-wrapper span[id=ip] {
   color: gray;
-  font: 1.1rem sans-serif;
+  font-size: 1.1rem ;
   position: absolute;
   margin: 40px auto auto 95px;
 }
@@ -148,7 +163,7 @@ body {
 
 .list-wrapper {
   width: 100%;
-  height: 660px;
+  margin-bottom: auto;
   overflow-y: auto;
   -webkit-mask-image: linear-gradient(to bottom, transparent 0, black var(--top-mask-size, 0), black calc(100% - var(--bottom-mask-size, 0)), transparent 100%);
   mask-image: linear-gradient(to bottom, transparent 0, black var(--top-mask-size, 0), black calc(100% - var(--bottom-mask-size, 0)), transparent 100%);
@@ -187,6 +202,8 @@ body {
 @media (max-width: 990px) { 
   .container {
     padding: 50px;
+    max-height: calc(100vh - 10vw);
+    max-height: calc(100svh - 10vw);
   }
 
   .title-wrapper { /* "登入以繼續"文字排版 */
@@ -207,10 +224,16 @@ body {
     height: 20vw;
   }
 
+  .card-wrapper:hover {
+    transform: scale(1);
+  }
+
+  .card-wrapper:active {
+    transform: scale(0.95);
+  }
+
   .list-wrapper {
     height: auto;
-    max-height: 75vh;
-    max-height: 75svh;
   }
 
   .card-wrapper img {
@@ -220,12 +243,12 @@ body {
   }
 
   .card-wrapper span[id=name] {
-    font: 3rem sans-serif;
+    font-size: 3rem ;
     margin: 15px auto auto calc(20vw - 5px);
   }
   
   .card-wrapper span[id=ip] {
-    font: 2rem sans-serif;
+    font-size: 2rem ;
     margin: 70px auto auto calc(20vw - 5px);
   }
   

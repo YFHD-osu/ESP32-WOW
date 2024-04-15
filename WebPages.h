@@ -66,7 +66,7 @@ const char login_html[] PROGMEM = R"rawliteral(
         
         <div>
           <!-- <input name="password" required type="password"/> -->
-          <input id="password-field" type="password" class="form-control" name="password" value="secret" required>
+          <input id="password-field" type="password" class="form-control" name="password" required>
           <span id="pwd"> 密碼 </span>
         </div>
         

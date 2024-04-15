@@ -16,8 +16,6 @@
 unsigned long startTime;
 WebServer webServer = WebServer();
 
-
-
 void setup() {
   Serial.begin(115200); // Enable serial port logging
   OLED.u8g2::setI2CAddress(0x7A);
@@ -38,6 +36,7 @@ void loop() {
   if (millis() - startTime > 60*60*1000) {
     ESP.restart();
   };
+
   delay(1);
 }
 

@@ -10,9 +10,7 @@ class PingHandler {
   public:
     void init();
     void update(int interval=-1);
-    
-    
-    bool deviceStatus[DEVICE_COUNT];
+
   private:
     unsigned int lastPing = millis();
 };
@@ -29,8 +27,8 @@ void PingHandler::update(int interval) {
   lastPing = millis();
   
   for (int i=0 ; i<DEVICE_COUNT ; i++) {
-    deviceStatus[i] = ping_start(devices[i].ip, 1, 1, 32, 100);
-    digitalWrite(pins[i], deviceStatus[i]);
+    devices[i].status = ping_start(devices[i].ip, 1, 1, 32, 100);
+    digitalWrite(pins[i], devices[i].status);
   }
 
 }
