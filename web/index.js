@@ -32,9 +32,9 @@ function getButton({res} = {}) {
   var color = isOnline ? "#68bd5a" : "#f36356";
   element.innerHTML = `
   <button class="card-wrapper" onclick="reqWakeUp(${res.id})">
-    <img src="${res.image}" alt="Custom wake on lan device logo">
-    <span id="name"> ${res.title} </span>
-    <span id="ip"> ${res.lore} </span>
+    <img src="${res.im}" alt="Custom wake on lan device logo">
+    <span id="name"> ${res.na} </span>
+    <span id="ip"> ${res.ip} </span>
     <span name="dot" id="status-dev-${res.id}" style="background-color: ${color}">
   </button>`;
   
