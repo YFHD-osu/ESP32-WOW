@@ -28,7 +28,7 @@ function setShadow(el) {
 
 function getButton({res} = {}) {
   var element = document.createElement('div');
-  var isOnline = parseInt(jsonData[i].st) == 1;
+  var isOnline = parseInt(res[i].st) == 1;
   var color = isOnline ? "#68bd5a" : "#f36356";
   element.innerHTML = `
   <button class="card-wrapper" onclick="reqWakeUp(${res.id})">
