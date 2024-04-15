@@ -28,12 +28,14 @@ function setShadow(el) {
 
 function getButton({res} = {}) {
   var element = document.createElement('div');
+  var isOnline = parseInt(jsonData[i].st) == 1;
+  var color = isOnline ? "#68bd5a" : "#f36356";
   element.innerHTML = `
   <button class="card-wrapper" onclick="reqWakeUp(${res.id})">
     <img src="${res.image}" alt="Custom wake on lan device logo">
     <span id="name"> ${res.title} </span>
     <span id="ip"> ${res.lore} </span>
-    <span name="dot" id="status-dev-${res.id}">
+    <span name="dot" id="status-dev-${res.id}" style="background-color: ${color}">
   </button>`;
   
   return element
@@ -48,9 +50,6 @@ function onReqList(xhr) {
   viewPort.innerHTML = "";
   for (var i = 0; i < jsonData.length; i++) {
     var html = getButton({res: jsonData[i]})
-    var isOnline = parseInt(jsonData[i].st) == 1;
-    var dot = html.getElementById(`status-dev-${i}`);
-    dot.style.backgroundColor = isOnline ? "#68bd5a" : "#f36356";
     viewPort.appendChild(html)
   }
 
