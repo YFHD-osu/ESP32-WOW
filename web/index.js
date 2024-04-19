@@ -1,3 +1,17 @@
+var lastList = [];
+
+String.prototype.hashCode = function() {
+  var hash = 0,
+    i, chr;
+  if (this.length === 0) return hash;
+  for (i = 0; i < this.length; i++) {
+    chr = this.charCodeAt(i);
+    hash = ((hash << 5) - hash) + chr;
+    hash |= 0; // Convert to 32bit integer
+  }
+  return hash;
+}
+
 function reqWakeUp(deviceID) {
   var xhr = new XMLHttpRequest();
   xhr.open("POST", `/wake?device=${deviceID}`, true); 
@@ -47,11 +61,25 @@ function onReqList(xhr) {
 
   const jsonData = JSON.parse(xhr.responseText);
   var viewPort = document.querySelector("#list-viewport");
-  viewPort.innerHTML = "";
+  if (lastList == viewPort.innerHTML) {
+
+  }
+
   for (var i = 0; i < jsonData.length; i++) {
     var html = getButton({res: jsonData[i]})
-    viewPort.appendChild(html)
+    if (html.innerHTML != lastList[i].innerHTML) {
+      if (viewPort.children[i] == null) {
+        viewPort.appendChild(html);
+      } else {
+        viewPort.children[i] = html;
+      }
+      lastList[i] = html;
+    }
+    
+    viewPort.insertBefore(html)
   }
+
+  lastList = viewPort.innerHTML;
 
   // Draw shadow for column
   setShadow(document.querySelector('.list-wrapper'));

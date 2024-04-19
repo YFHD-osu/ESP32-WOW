@@ -4,13 +4,13 @@
 #include <HTTPRequest.hpp>
 #include <HTTPResponse.hpp>
 
+#include "web.h"
+#include "wol.h"
+#include "oled.h"
+#include "ping.h"
 #include "config.h"
-#include "Oled.h"
-#include "Ping.h"
-#include "mbedtls.h"
-#include "WebPages.h"
-#include "WakeOnLan.h"
 #include "logger.h"
+#include "mbedtls.h"
 
 using namespace httpsserver;
 
@@ -35,7 +35,7 @@ class WebServer: public HTTPServer {
     static bool is_authenticated(HTTPRequest*);
     static void handleList(HTTPRequest* , HTTPResponse*);
     static void handleWake(HTTPRequest*, HTTPResponse*);
-    static void handlePing(HTTPRequest*, HTTPResponse*);
+    // static void handlePing(HTTPRequest*, HTTPResponse*); (Departured)
     static void handle404(HTTPRequest* , HTTPResponse*);
     static void handleRoot(HTTPRequest* , HTTPResponse*);
     static void handleLogin(HTTPRequest* , HTTPResponse*);
@@ -48,7 +48,7 @@ class WebServer: public HTTPServer {
     ResourceNode *nodeLogout  = new ResourceNode("/logout", "GET",  &handleLogout);
     ResourceNode *nodeRoot    = new ResourceNode("/",       "GET",  &handleRoot);
     ResourceNode *wakeDevice  = new ResourceNode("/wake",   "POST", &handleWake);
-    ResourceNode *pingDevice  = new ResourceNode("/refresh","GET",  &handlePing);
+    // ResourceNode *pingDevice  = new ResourceNode("/refresh","GET",  &handlePing);
     ResourceNode *node404     = new ResourceNode("",        "GET",  &handle404);
 
 };
@@ -62,7 +62,7 @@ void WebServer::begin(void) {
   WebServer::registerNode(nodeRoot);
   WebServer::registerNode(wakeDevice);
   WebServer::registerNode(pingList);
-  WebServer::registerNode(pingDevice);
+  // WebServer::registerNode(pingDevice);
   WebServer::setDefaultNode(node404);
   
   LOGI("WebServer", "Starting server with AES key: %s", key);
@@ -82,11 +82,26 @@ void WebServer::begin(void) {
 
 // Establish login page
 void WebServer::handleLogin(HTTPRequest *req, HTTPResponse * res) {
+  res->setHeader("Expires", "0");
+  res->setHeader("Pragma", "no-cache");
+  res->setHeader("Cache-Control", "no-cache, must-revalidate");
+
+  if (is_authenticated(req)) {
+    res->setStatusCode(301);
+    res->setHeader("Location", "/");
+    res->setStatusText("Moved Permanently");
+    return;
+  }
+
   res->setHeader("Content-Type", "text/html; charset=utf-8");
   res->println(login_html);
 }
 
 void WebServer::handleLogout(HTTPRequest * req, HTTPResponse * res) {
+  res->setHeader("Expires", "0");
+  res->setHeader("Pragma", "no-cache");
+  res->setHeader("Cache-Control", "no-cache, must-revalidate");
+  
   req->discardRequestBody();
   res->setStatusCode(301);
   res->setStatusText("Moved Permanently");
@@ -95,7 +110,10 @@ void WebServer::handleLogout(HTTPRequest * req, HTTPResponse * res) {
 }
 
 void WebServer::handleWake(HTTPRequest *req, HTTPResponse * res) {
-  if (!(is_authenticated(req))) return;
+  if (!(is_authenticated(req))) {
+    res->setStatusCode(403);
+    return;
+  };
   
   ResourceParameters * params = req->getParams();
   std::string deviceID;
@@ -103,7 +121,7 @@ void WebServer::handleWake(HTTPRequest *req, HTTPResponse * res) {
 
   WOL.sendMagicPacket(devices[std::stoi(deviceID)].mac); // Wake device
   LOGD("WebServer", "Got wake requests (Device: %s)", deviceID.c_str());
-  
+  res->setStatusCode(200);
   req->discardRequestBody();
 }
 
@@ -137,18 +155,18 @@ void WebServer::handleSession(HTTPRequest *req, HTTPResponse * res) {
     res->setStatusCode(301);
     res->setStatusText("Moved Permanently");
     res->setHeader("set-cookie", cookieChar);
-    res->setHeader("Location", "/?r=0");
+    res->setHeader("Location", "/");
   }else{
     req->discardRequestBody();
     res->setStatusCode(301);
     res->setStatusText("Moved Permanently");
     res->setHeader("set-cookie", "ESPSESSION=0");
-    res->setHeader("Location", "/login?e=1");
+    res->setHeader("Location", "/login");
   }
 }
 
-//處理更新裝置
-void WebServer::handlePing(HTTPRequest * req, HTTPResponse * res) {
+// 處理更新裝置 (Departured)
+/*void WebServer::handlePing(HTTPRequest * req, HTTPResponse * res) {
   if (is_authenticated(req)) {
     res->setHeader("Content-Type", "text/plain; charset=utf-8");
     res->setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
@@ -162,16 +180,17 @@ void WebServer::handlePing(HTTPRequest * req, HTTPResponse * res) {
   res->setStatusCode(301);
   res->setStatusText("Moved Permanently");
   res->setHeader("Location", "/login");  
-}
+}*/
 
 void WebServer::handleList(HTTPRequest * req, HTTPResponse * res) {
+  res->setHeader("Expires", "0");
+  res->setHeader("Pragma", "no-cache");
+  res->setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
+
   if (is_authenticated(req)) {
-    res->setHeader("Expires", "0");
-    res->setHeader("Pragma", "no-cache");
-    res->setHeader("Content-Type", "application/json; charset=UTF-8");
-    res->setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
-    res->print("[");
     LOGI("ListDev", "OK LISTING %d devices", DEVICE_COUNT);
+    res->setHeader("Content-Type", "application/json; charset=UTF-8");
+    res->print("[");
     for (int i=0 ; i<DEVICE_COUNT ; i++) {
       res->print(devices[i].toJson());
       if (i+1 != DEVICE_COUNT) res->print(",");
@@ -179,38 +198,45 @@ void WebServer::handleList(HTTPRequest * req, HTTPResponse * res) {
     res->print("]");
     return;
   }
-
-  LOGD("WebServer", "Unauthenticated Client!");
+  
+  LOGD("WebServer", "Unauthenticated client!");
   req->discardRequestBody();
-  res->setStatusCode(301);
-  res->setStatusText("Moved Permanently");
-  res->setHeader("Location", "/login");  
+  res->setStatusCode(403);
+  res->setStatusText("Forbidden");
+  res->setHeader("Content-Type", "text/html");
+  res->println(forbidden_html);
+  return;
 }
 
 // 建立根(控制喚醒)頁面
 void WebServer::handleRoot(HTTPRequest * req, HTTPResponse * res) {
+  res->setHeader("Expires", "0");
+  res->setHeader("Pragma", "no-cache");
+  res->setHeader("Cache-Control", "no-cache, must-revalidate");
+
   if (is_authenticated(req)) {
-    LOGD("WebServer", "Unauthenticated Client!");
     res->setStatusCode(200);
     res->setStatusText("OK");
     res->setHeader("Content-Type", "text/html; charset=utf-8");
     res->println(index_html);
     return;
   }
-  LOGD("WebServer", "Unauthenticated Client!");
+
+  LOGD("WebServer", "Unauthenticated client!");
   req->discardRequestBody();
   res->setStatusCode(301);
   res->setStatusText("Moved Permanently");
   res->setHeader("Location", "/login");
 }
 
-//處理未註冊的頁面
+// 處理未註冊的頁面
 void WebServer::handle404(HTTPRequest * req, HTTPResponse * res) {
   req->discardRequestBody();
   res->setStatusCode(404);
   res->setStatusText("Not Found");
   res->setHeader("Content-Type", "text/html");
   res->println(not_found_html);
+  return;
 }
 
 // Validate login secret

@@ -2,4 +2,4 @@
 #include <WiFiUdp.h>
 
 WiFiUDP UDP;
-WakeOnLan WOL(UDP); 
+WakeOnLan WOL(UDP);

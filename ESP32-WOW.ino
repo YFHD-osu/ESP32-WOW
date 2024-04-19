@@ -1,11 +1,11 @@
 #include <WiFi.h>
 
 #include "config.h"
-#include "oled.h"
-#include "ping.h"
-#include "easyddns.h"
-#include "webPages.h"
-#include "webServer.h"
+#include "lib\web.h"
+#include "lib\oled.h"
+#include "lib\ping.h"
+#include "lib\ddns.h"
+#include "lib\server.h"
 
 #if CONFIG_FREERTOS_UNICORE
 #define ARDUINO_RUNNING_CORE 0
@@ -20,7 +20,7 @@ void setup() {
   Serial.begin(115200); // Enable serial port logging
   OLED.u8g2::setI2CAddress(0x7A);
   OLED.begin();         // Enable OLED display
-  pinger.init();        // 初始化Ping
+  Pinger::init();        // 初始化Ping
 
   connectWifi(20);      // Connect to wifi until success
   ddns.begin();         // DDNS 更新
@@ -32,7 +32,7 @@ void setup() {
 void loop() {
   ddns.update(10*1000);
   OLED.update(300);
-  pinger.update(2500);
+  Pinger::update(2500);
   if (millis() - startTime > 60*60*1000) {
     ESP.restart();
   };

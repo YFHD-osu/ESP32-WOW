@@ -87,4 +87,12 @@ const char not_found_html[] PROGMEM = R"rawliteral(
   </html>
 )rawliteral";
 
+const char forbidden_html[] PROGMEM = R"rawliteral(
+<!DOCTYPE html>
+  <html>
+    <head><title>Forbidden</title></head>
+    <body><h1>403 Forbidden</h1><p>Please login first.</p></body>
+  </html>
+)rawliteral";
+
 #endif

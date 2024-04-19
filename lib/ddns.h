@@ -2,10 +2,11 @@
 #define EASY_DDNS_INCLUDE
 
 #include <WiFi.h>
-#include "config.h"
 #include <EasyDDNS.h>
-#include "icons.h"
+
 #include "oled.h"
+#include "icons.h"
+#include "config.h"
 #include "logger.h"
 // #include "HTTPClient.h"
 
