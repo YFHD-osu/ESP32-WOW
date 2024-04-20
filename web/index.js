@@ -71,7 +71,9 @@ function onReqList(xhr) {
       viewPort.appendChild(html);
     } else {
       viewPort.children[i].innerHTML = html.innerHTML;
-    }    
+    }
+
+    lastList[i] = viewPort.children[i];
   }
 
   lastList = viewPort.innerHTML;
