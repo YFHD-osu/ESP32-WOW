@@ -75,8 +75,13 @@ function onReqList(xhr) {
       }
       lastList[i] = html;
     }
+
+    if (lastList[i+1] == null) {
+      viewPort.appendChild(html)
+    } else {
+      viewPort.insertBefore(lastList[i+1], html)
+    }
     
-    viewPort.insertBefore(html)
   }
 
   lastList = viewPort.innerHTML;
