@@ -1,5 +1,5 @@
 # ESP32 Wake On Wan
-Wake up computers with ESP32 over Wide Area Network.
+Wake computers up with ESP32 over Wide Area Network.
 
 ## Webpage Demostration
 - Wake on lan gui: [link](https://yfhd-osu.github.io/ESP32-WOW/web/index.html)
