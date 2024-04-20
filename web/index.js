@@ -70,7 +70,7 @@ function onReqList(xhr) {
     if (viewPort.children[i] == null) {
       viewPort.appendChild(html);
     } else {
-      viewPort.children[i] = html;
+      viewPort.children[i].innerHTML = html.innerHTML;
     }    
   }
 
