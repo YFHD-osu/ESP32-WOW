@@ -1,36 +1,61 @@
-# ESP32 Wake on wan
-Wake up computers with ESP32 through the WAN.
+# ESP32 WakeOnWan
+Wake up computers with ESP32 over Wide Area Network.
 
-## Project introduction
+## Project Introduction
 Have you ever been outside and need to use the computer
 at home but it is off? If so, then you need this project.
 Using ESP32 to setup a HTTPS web server and handle WOL
 request is a power-saving method.
 
-## Webpage demostration
+## Webpage Demostration
 - Wake on lan gui: [link](https://yfhd-osu.github.io/ESP32-WOW/web/index.html)
 - Login page: [link](https://yfhd-osu.github.io/ESP32-WOW/web/login.html)
 
-## Libraries dependence
-- [u8g2](https://github.com/olikraus/u8g2) - OLED display driver
-- [Mbed-TLS](https://github.com/Mbed-TLS/mbedtls) - AES encrypt library
-- [EasyDDNS](https://github.com/ayushsharma82/EasyDDNS) - DUC address update library
-- [ESP32Ping](https://github.com/marian-craciunescu/ESP32Ping/releases/tag/1.6) (modified) - Ping device library
-- [ESP32HttpsSever](https://github.com/fhessel/esp32_https_server) - Web server library
+## Setup
+### 1. Installation Dependences
+| Title | Description |
+| :---- | :---------- |
+| [u8g2](https://github.com/olikraus/u8g2) | OLED display driver |
+| [Mbed-TLS](https://github.com/Mbed-TLS/mbedtls) | AES encrypt library |
+| [EasyDDNS](https://github.com/ayushsharma82/EasyDDNS) | DUC address update library |
+| [ESP32Ping](https://github.com/marian-craciunescu/ESP32Ping/releases/tag/1.6) | Ping device library |
+| [ESP32HttpsSever](https://github.com/fhessel/esp32_https_server) | Web server library |
 
-#### Note: Need to change line 292 to 293 in ping.cpp:
+#### In ``ESP32Ping`` library, change line 292 to 293 in ``ping.cpp ``
 ```cpp
 // Timeout
   tout.tv_sec = 0; // tout.tv_sec = timeout;
   tout.tv_usec = timeout*1000; //tout.tv_usec = 0;
 ```
 
-#### Note: Need to change line 8 in esp32_https_server\src\HTTPConnection.hpp
+#### In ``ESP32HttpsSever`` library, change line 8 in ``src\HTTPConnection.hpp``
 ```cpp
 #include <mbedtls/base64.h>
 #include <esp32/sha.h> //#include <hwcrypto/sha.h>
 #include <functional>
 ```
+
+### 2. Configure ESP32 Server Settings
+- Clone this repository if you haven't.
+- Rename ``config.h.example`` to ``config.h`` and copy it into  ``\lib`` folder
+- Follow instructions in ``config.h`` to complete settings.
+
+#### Device Section
+``devices`` variable is an list of ``Device`` object, and every ``Device`` object should be initialized like below 
+```cpp
+Device(ID, IP-ADDRESS, MAC-ADDRESS, DEVICE-NAME, IMAGE-ASSETS, DESCRIPTION)
+```
+| Variable | Type |  Description                     |
+| :------- | :--- | :------------------------------- |
+| ID | ``int`` | Serial ID starts from 0 for each device |
+| IP-ADDRESS | ``IPAddress`` | Local area network IPv4 address |
+| MAC-ADDRESS | ``char[18]`` | Mac address string object |
+| DEVICE-NAME | ``String`` | Device name shows on website |
+| IMAGE-ASSETS | ``String`` | URL to the image as device icon on website |
+| DESCRIPTION | ``String`` | Device description below title on website (Gray out text) |
+
+#### WebServer Section
+
 
 ## Dynamic Security Authentication
 #### 中文名稱: 

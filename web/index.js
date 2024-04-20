@@ -67,7 +67,7 @@ function onReqList(xhr) {
 
   for (var i = 0; i < jsonData.length; i++) {
     var html = getButton({res: jsonData[i]})
-    if (html.innerHTML != lastList[i].innerHTML) {
+    if (html.innerHTML != (lastList[i] == null) ? "" : lastList[i].innerHTML) {
       if (viewPort.children[i] == null) {
         viewPort.appendChild(html);
       } else {

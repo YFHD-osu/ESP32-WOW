@@ -20,8 +20,8 @@ class SecureWebServer: public HTTPSServer {
 
   private:
     SSLCert cert = SSLCert(
-      example_crt_DER, example_crt_DER_len,
-      example_key_DER, example_key_DER_len
+      crt_DER, crt_DER_len,
+      key_DER, key_DER_len
     );
 };
 
