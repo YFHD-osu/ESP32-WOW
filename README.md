@@ -20,6 +20,7 @@ request is a power-saving method.
 | [EasyDDNS](https://github.com/ayushsharma82/EasyDDNS) | DUC address update library |
 | [ESP32Ping](https://github.com/marian-craciunescu/ESP32Ping/releases/tag/1.6) | Ping device library |
 | [ESP32HttpsSever](https://github.com/fhessel/esp32_https_server) | Web server library |
+| [EasyDDNS](https://github.com/ayushsharma82/EasyDDNS) | Refresh DDNS IP libarary |
 
 #### In ``ESP32Ping`` library, change line 292 to 293 in ``ping.cpp ``
 ```cpp
@@ -55,15 +56,19 @@ Device(ID, IP-ADDRESS, MAC-ADDRESS, DEVICE-NAME, IMAGE-ASSETS, DESCRIPTION)
 | DESCRIPTION | ``String`` | Device description below title on website (Gray out text) |
 
 #### WebServer Section
-
+- Encode a SSL certificate: 
+1. You need to prepare two SSL certificate files: ``.crt`` and ``.key``. 
+2. Use OpenSSL convert them to ``.DER`` file extension. 
+3. Run ``cert_convert.py -i <cert path>`` to convert ``.DER`` file to C++ array.
+4. Rename ``CERTIFICATE_der_len`` variable to ``crt_DER`` or ``key_DER`` and fill in ``crt_DER_len`` and ``key_DER_len``.
 
 ## Dynamic Security Authentication
 #### 中文名稱: 
 - 動態安全認證
 #### 特色：
 1. 與一般Session 加密不同，本加密協議可以避免 Session ID 洩漏時有心人士可從不同IP登入。
-3. 由於微處理機不容易實現時效性Cookie 所以每次重啟微處理機時，會自動登出所有裝置。
-4. 適合用於記憶體空間小到靠北的主機，例如ESP32
+2. 由於微處理機不容易實現時效性Cookie 所以每次重啟微處理機時，會自動登出所有裝置。
+3. 適合用於記憶體空間小到靠北的主機，例如ESP32
 
 #### 技術核心：
 1. 加密方式：AES-256 (美國聯邦政府採用的一種區塊加密標準)加密協議。

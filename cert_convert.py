@@ -1,40 +1,24 @@
-from OpenSSL import crypto
+import re, sys
 import binascii
-import re
+from argparse import ArgumentParser
 
-LINE_LENGTH = 42
-def pprint(ctx: str, anchor: str = "center") -> str:
-  non_ascii = re.findall(r"[^ A-z0-9\!\@\#\$\%\^\&\*\(\)\{\}\[\]\:\-\/\*\-\+]", ctx)
-  if (len(ctx)+len(non_ascii)) % 2 != LINE_LENGTH % 2:
-    if anchor == "right": ctx = " "+ctx
-    else: ctx += " "
-    blank = LINE_LENGTH - len(ctx) - len(non_ascii) + 1 - 4
-  else:  
-    blank = LINE_LENGTH - len(ctx) - len(non_ascii) - 4
+""" This script can convert an pem ssl certificate to 
+Original author: https://github.com/fhessel/ 
+Original file: https://github.com/fhessel/esp32_https_server/blob/master/extras/create_cert.sh
+Rewrite by: https://github.com/YFHD-osu
+"""
 
-  if anchor == "center":
-    print( "│ " + " "*(blank//2) + ctx + " "*(blank//2) + " │" )
-  elif anchor == "left":
-    print( "│ " + ctx + " "*(blank) + " │" )
-  elif anchor == "right":
-    print( "│ " + " "*(blank) + ctx + " │" )
-  return
+def convert(path: str) -> str:
+  file = open(path, "rb")
+  hex_str = binascii.hexlify(file.read())
+  hex_list = [f"0x{i.upper()}" for i in re.findall('..',hex_str.decode())]
+  return f'''unsigned int CERTIFICATE_der_len = {len(hex_list)};
+  \b\bunsigned char CERTIFICATE_der[] = {{ {", ".join(hex_list)} }};'''
 
-print("┌" + "─"*40 + "┐")
-pprint("Certificate Converter")
-pprint("作者: YFHD 參考 fhessel 製作")
-print("├" + "─"*40 + "┤")
-pprint("請選擇功能: (按下數字0-9) ", "left")
-exit()
-keyfile = open("test.txt", "r")
-cert_file = keyfile.read()
-cert_pem = crypto.load_certificate(crypto.FILETYPE_PEM, cert_file)
+def main() -> None:
+  parser = ArgumentParser()
+  parser.add_argument("-i", "--input", help="Input file path")
+  args = parser.parse_args()
+  sys.stdout.write(convert(args.input))
 
-# 將二進制數據轉換為十六進制字符串
-data = b'\x48\x65\x6c\x6c\x6f\x20\x57\x6f\x72\x6c\x64'
-hex_str = binascii.hexlify(data).decode('utf-8')
-print(hex_str)  # '48656c6c6f20576f726c64'
-
-# 將十六進制字符串轉換為二進制數據
-bin_data = binascii.unhexlify(hex_str)
-print(bin_data)  # b'Hello World'
+if __name__ == "__main__": main()
