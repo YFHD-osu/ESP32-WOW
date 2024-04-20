@@ -61,27 +61,17 @@ function onReqList(xhr) {
 
   const jsonData = JSON.parse(xhr.responseText);
   var viewPort = document.querySelector("#list-viewport");
-  if (lastList == viewPort.innerHTML) {
-
-  }
 
   for (var i = 0; i < jsonData.length; i++) {
     var html = getButton({res: jsonData[i]})
-    if (html.innerHTML != (lastList[i] == null) ? "" : lastList[i].innerHTML) {
-      if (viewPort.children[i] == null) {
-        viewPort.appendChild(html);
-      } else {
-        viewPort.children[i] = html;
-      }
-      lastList[i] = html;
-    }
-
-    if (lastList[i+1] == null) {
-      viewPort.appendChild(html)
-    } else {
-      viewPort.insertBefore(lastList[i+1], html)
-    }
+    var cHtml = (lastList[i] == null) ? "" : lastList[i].innerHTML;
     
+    if (html.innerHTML == cHtml) continue;
+    if (viewPort.children[i] == null) {
+      viewPort.appendChild(html);
+    } else {
+      viewPort.children[i] = html;
+    }    
   }
 
   lastList = viewPort.innerHTML;
