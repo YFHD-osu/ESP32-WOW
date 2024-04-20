@@ -1,13 +1,13 @@
-# VS code realted
+# VSCode realted
 .vscode/
 build/
 
-# Chinese font generator related
+# U8g2 Font Generator related
 u8g2Files/
 Generator.ps1
 
-# Esp32 config
-config.h 
+# ESP32 Config
+config.h
 
-# SSl certificate
+# SSL Certificate
 certificate/

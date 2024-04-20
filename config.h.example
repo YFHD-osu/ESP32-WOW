@@ -1,0 +1,99 @@
+#ifndef CONFIG_INCLUDE
+#define CONFIG_INCLUDE
+
+/* ==================================================================
+|  WiFi Section                                                     |
+|  - Fill in WiFi SSID and PSK for ESP32 to start the web server on |
+================================================================== */
+#define WIFI_SSID "wifi"
+#define WIFI_PSK  "p@ssw0rd"
+
+/* =======================================================================
+|  Website Section                                                       |
+|  - Set username and password you would like to use to login to website |
+======================================================================= */
+#define SITE_USER "admin"
+#define SITE_PASS "p@ssw0rd"
+
+/* ============================================================================
+|  DDNS Section                                                               |
+|  - Enable DDNS IP refresh services if needed (ex. DuckDNS, No-ip etc)       |
+|  - More detail could be found in: https://github.com/ayushsharma82/EasyDDNS |
+============================================================================ */
+#define DUC_SERVICE true
+#define DOMAIN_TYPE "noip"
+#define DOMAIN_NAME "my-no-ip@domain.net"
+#define DOMAIN_USER "noip-user"
+#define DOMAIN_PASS "p@ssw0rd"
+
+/* =====================================================================
+|  WebServer Section                                                  |
+|  - SSL_SERVER: Enable HTTPS web server (SSL certificate is required) |
+|  - See README.md to know how to encode certificate                   | 
+===================================================================== */
+#define SSL_SERVER false
+unsigned int crt_DER_len = 0;
+unsigned char crt_DER[] = { /* Encoded SSL Certificate HERE */ };
+unsigned int key_DER_len = 0;
+unsigned char key_DER[] = { /* Encoded SSL Private Key HERE */ };
+
+/* =======================
+|  OLED Section          |
+|  - Enable OLED display |
+======================= */
+#define OLED_DISPLAY true
+
+/* =======================================================
+|  Logging Section                                       |
+|  - Serial port logging rules                           |
+|  - LOG_LEVEL: 0=>ERROR, 1=>WARNNING, 2=>INFO, 3=>DEBUG |
+======================================================= */
+#define LOG_LEVEL 1
+#define LOG_TIMESTAMP false
+
+/* ============================
+|  Class Definition Section   |
+|  - DO NOT change code below |
+============================ */
+class Device {
+  public: 
+    short int id;
+    IPAddress ip;
+    char mac[18];
+    bool status = false;
+    String title, image, lore;
+
+  Device(int id, IPAddress ip, char mac[18], String title, String image, String lore) {
+    this->id = id;
+    this->ip = ip;
+    strcpy(this->mac, mac);
+    this->title = title;
+    this->image = image;
+    this->lore = lore;
+  };
+
+  String toJson() {
+    return "{\"id\":" + String(id) + ", \"na\":\"" + title + "\", \"ip\":\"" + lore + "\", \"im\": \"" + image + "\"}";
+  }
+};
+
+/* ===================================================
+|  Device Section                                    |
+|  - Declare all your device needs to be wake on lan |
+|  - Further information on README.md                |
+=================================================== */
+Device devices[] = {
+  Device(0, IPAddress(192, 168, 1, 110), "AA:BB:CC:DD:EE:FF", "Device Name 1", "assets/device3.png", "Device 1 lore"),
+  Device(1, IPAddress(192, 168, 1, 109), "AA:BB:CC:DD:EE:FF", "Device Name 2", "assets/device2.png", "Device 2 lore"),
+  Device(2, IPAddress(192, 168, 1, 108), "AA:BB:CC:DD:EE:FF", "Device Name 3", "assets/device1.png", "Device 3 lore"),
+};
+
+#define DEVICE_COUNT (sizeof(devices) / sizeof(devices[0])) // Do not change this 
+
+/* ===========================================================
+|  LED Section                                               |
+|  - Define led pins to display device sataus (Can be empty) |
+=========================================================== */
+const int LED_PINS[] = {};
+
+#endif
