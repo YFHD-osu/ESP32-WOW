@@ -1,6 +1,9 @@
 # ESP32 Wake On Wan
 Wake computers up with ESP32 over Wide Area Network.
 
+> [!IMPORTANT]
+> This project is now unmaintained, please migrate to [ESP32-MQTT](https://github.com/YFHD-osu/ESP32-WOM)
+
 ## Webpage Demostration
 - Wake on lan gui: [link](https://yfhd-osu.github.io/ESP32-WOW/web/index.html)
 - Login page: [link](https://yfhd-osu.github.io/ESP32-WOW/web/login.html)
